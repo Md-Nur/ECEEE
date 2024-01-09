@@ -41,7 +41,7 @@ const Carousel = () => {
       loop={true}
     >
       {carosel.map((item, index) => (
-        <SwiperSlide>
+        <SwiperSlide key={index}>
           <div
             className="flex flex-col w-screen h-[600px] items-center justify-center"
             key={index}
