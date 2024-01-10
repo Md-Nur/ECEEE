@@ -43,7 +43,7 @@ const Carousel = () => {
       {carosel.map((item, index) => (
         <SwiperSlide key={index}>
           <div
-            className="flex flex-col w-screen h-[600px] items-center justify-center"
+            className="flex flex-col w-screen h-[100vw] max-h-[600px] items-center justify-center p-5"
             key={index}
             style={{
               backgroundImage: `url('/fadebg.png'),url(${item.image})`,
@@ -51,8 +51,8 @@ const Carousel = () => {
               backgroundSize: "cover",
             }}
           >
-            <h1 className="text-8xl text-white font-bold">{item.title}</h1>
-            <p className="text-xl text-white">{item.slogan}</p>
+            <h1 className="text-4xl md:text-8xl text-white font-bold">{item.title}</h1>
+            <p className="text-center md:text-xl text-white">{item.slogan}</p>
           </div>
         </SwiperSlide>
       ))}

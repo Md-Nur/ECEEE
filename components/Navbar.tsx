@@ -1,9 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
-    <nav className="navbar bg-base-100 sticky top-1">
+    <nav className="navbar bg-base-100 sticky top-0 z-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -27,51 +27,74 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Item 1</a>
+              <Link href="/members">Members</Link>
             </li>
             <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
+              <Link href="/executive-committee">Executive Committee</Link>
             </li>
             <li>
-              <a>Item 3</a>
+              <Link href="/activities">Activites</Link>
+            </li>
+            <li>
+              <Link href="/about">About</Link>
             </li>
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost text-xl">ECEEE</Link>
+        <Link href="/" className="btn btn-ghost text-xl">
+          ECEEE
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Item 1</a>
+            <Link href="/members">Members</Link>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
+            <Link href="/executive-committee">Executive Committee</Link>
           </li>
           <li>
-            <a>Item 3</a>
+            <Link href="/activities">Activites</Link>
+          </li>
+          <li>
+            <Link href="/about">About</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar"
+          >
+            <div className="w-10 rounded-full">
+              <Image
+              height={50}
+              width={50}
+                alt="Profile"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+
+              />
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <a className="justify-between">
+                Profile
+                <span className="badge">New</span>
+              </a>
+            </li>
+            <li>
+              <a>Settings</a>
+            </li>
+            <li>
+              <a>Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
