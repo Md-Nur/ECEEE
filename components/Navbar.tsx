@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import logo from "@/public/ru-logo.png";
 
 const Navbar = () => {
+  const id = 2;
   return (
     <nav className="navbar bg-base-100 sticky top-0 z-10">
       <div className="navbar-start">
@@ -68,13 +70,7 @@ const Navbar = () => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <Image
-              height={50}
-              width={50}
-                alt="Profile"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-
-              />
+              <Image alt="Profile" src={logo} />
             </div>
           </div>
           <ul
@@ -82,16 +78,16 @@ const Navbar = () => {
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>
-              <a className="justify-between">
+              <Link href={`/user/profile/${id}`} className="justify-between">
                 Profile
-                <span className="badge">New</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a>Settings</a>
+              <Link href={`/user/update/${id}`}>Settings</Link>
             </li>
             <li>
-              <a>Logout</a>
+              {/* <Link href="/user/logout">Logout</Link> */}
+              <Link href="/user/login">login</Link>
             </li>
           </ul>
         </div>
