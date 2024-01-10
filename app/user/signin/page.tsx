@@ -36,7 +36,7 @@ const Singin = () => {
         name="email"
         className="input input-bordered w-full"
       />
-      {/* <label
+      <label
         htmlFor="img"
         className="flex items-center justify-between w-full px-1 md:px-4 py-1 border rounded"
       >
@@ -48,9 +48,9 @@ const Singin = () => {
           accept="image/png, image/jpeg"
           required
           id="img"
-          multiple
+          // multiple
         />
-      </label> */}
+      </label>
       <input
         type="tel"
         placeholder="Phone Number"

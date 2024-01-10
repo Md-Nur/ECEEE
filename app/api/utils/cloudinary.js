@@ -7,13 +7,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (bufferFile) => {
+const uploadOnCloudinary = async (bufferFile, folderName) => {
   if (!bufferFile) throw new ApiError(500, "Buffer file can not read");
   // upload the file on clodinary
   return new Promise((resolve, reject) => {
     cloudinary.uploader
       .upload_stream(
-        { resource_type: "auto", folder: "Gadgetify/products" },
+        { resource_type: "auto", folder: `ECEEE/${folderName}` },
         (error, result) => {
           if (error) {
             // console.error("Upload error: ", error);

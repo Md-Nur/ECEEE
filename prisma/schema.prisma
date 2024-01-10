@@ -16,6 +16,7 @@ model User {
   email               String   @default("")
   phone               String   @unique
   password            String
+  images              String   @default("")
   isVerified          Boolean  @default(false)
   isAdmin             Boolean  @default(false)
   forgotPasswordToken String   @default("")

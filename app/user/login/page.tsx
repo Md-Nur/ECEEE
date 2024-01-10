@@ -1,19 +1,12 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-// import { axios } from "axois";
-import Link from "next/link";
 import Forms from "@/components/Form";
 
 const Login = () => {
-  const [user, setUser] = useState({
-    phone: "",
-    password: "",
-  });
+  
   const Props: any = {
     headingName: "Signin User",
     method: "POST",
-    apiUrl: `/api/login`,
+    apiUrl: `/api/users/login`,
     submitName: "Login",
   };
   return (

@@ -2,6 +2,7 @@
 import { ReactNode, FormEvent, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { User } from "@/app/user/profile/[id]/page";
 
 interface Props {
   children: ReactNode;
@@ -31,21 +32,23 @@ const Forms: React.FC<Props> = ({
     if (!formData) {
       throw Error("There have no form data: " + formData);
     }
-    await toast.promise(
-      fetch(apiUrl, {
-        method: method,
-        body: formData,
-      }),
-      {
-        loading: "Processing request",
-        success: "Success👌",
-        error: "There is a problem to processing the request 🤯",
+    toast.loading("Loading...");
+    const res = await fetch(apiUrl, {
+      method: method,
+      body: formData,
+    });
+    const jsonData = await res.json();
+    if (res.ok && (await jsonData.statusCode) < 400) {
+      const resData = await jsonData.data;
+      console.log(jsonData, resData);
+      toast.dismiss();
+      toast.success(await jsonData.message);
+      if (apiUrl === "/api/users/login") {
+        router.push(`/user/profile/${resData.id}`);
       }
-    );
-
-    if (method === "PUT") {
-      let url = apiUrl.split("/"); // /api/product/${params.id}
-      router.push(`/products/updated/${url[3]}`);
+    } else {
+      toast.dismiss();
+      toast.error(await jsonData.errors);
     }
 
     ref.current?.reset();
@@ -74,6 +77,9 @@ const Forms: React.FC<Props> = ({
             className="btn btn-outline rounded"
             value="Clear"
             disabled={pending}
+            onClick={() => {
+              ref.current?.reset();
+            }}
           />
         </div>
       </form>
