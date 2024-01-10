@@ -6,7 +6,9 @@ export default function Home() {
     <>
       <Carousel />
       <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-20 bg-base-300 p-[3vw] rounded-lg">
-        <h2 className="text-4xl font-bold text-center my-3">Mission and vission</h2>
+        <h2 className="text-4xl font-bold text-center my-3">
+          Mission and vission
+        </h2>
         <p className="text-lg my-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
           suscipit facilis natus inventore non nostrum debitis delectus
@@ -16,7 +18,6 @@ export default function Home() {
           suscipit odit, laborum ut vitae illo?
         </p>
       </main>
-      ;
     </>
   );
 }
