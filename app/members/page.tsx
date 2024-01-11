@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "@/public/ru-logo.png";
 
 interface User {
   id: number;
@@ -43,10 +44,7 @@ const UserList = () => {
                       alt={user.fullname}
                       height={30}
                       width={30}
-                      src={
-                        user.images ||
-                        "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                      }
+                      src={user.images || logo}
                     />
                   </div>
                 </div>

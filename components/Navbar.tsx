@@ -96,6 +96,9 @@ const Navbar = () => {
               <LogoutButton />
               <Link href="/user/login">Login</Link>
             </li>
+            <li>              
+              <Link href="/admin">Admin</Link>
+            </li>
           </ul>
         </div>
       </div>
