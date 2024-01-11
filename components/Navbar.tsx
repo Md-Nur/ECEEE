@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/ru-logo.png";
+import LogoutButton from "./LogutButton";
 
 const Navbar = () => {
   const id = 2;
@@ -92,8 +93,8 @@ const Navbar = () => {
               <Link href={`/user/update/${id}`}>Settings</Link>
             </li>
             <li>
-              {/* <Link href="/user/logout">Logout</Link> */}
-              <Link href="/user/login">login</Link>
+              <LogoutButton />
+              <Link href="/user/login">Login</Link>
             </li>
           </ul>
         </div>

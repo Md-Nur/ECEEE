@@ -4,7 +4,7 @@ import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import { NextRequest, NextResponse } from "next/server";
 import { fileToUrl } from "../../utils/files.js";
-import { userSchema } from "../route.js";
+import { userSchema } from "../route";
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.formData();
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(
+    validatedData.data.password = await bcryptjs.hash(
       validatedData.data.password,
       salt
     );

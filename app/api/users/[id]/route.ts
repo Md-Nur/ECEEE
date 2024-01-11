@@ -4,6 +4,7 @@ import ApiError from "../../utils/ApiError";
 import ApiResponse from "../../utils/ApiResponse";
 import { deleteFiles, fileToUrl } from "../../utils/files";
 import { userSchema } from "../route";
+import bcryptjs from "bcryptjs";
 
 interface Props {
   params: { id: string };
@@ -64,6 +65,11 @@ export async function PUT(req: NextRequest, { params }: Props) {
   if (!validatedData.success) {
     return NextResponse.json(validatedData.error.errors, { status: 400 });
   }
+  const salt = await bcryptjs.genSalt(10);
+  validatedData.data.password = await bcryptjs.hash(
+    validatedData.data.password,
+    salt
+  );
 
   try {
     await prisma.user.update({

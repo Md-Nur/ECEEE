@@ -43,8 +43,7 @@ const Forms: React.FC<Props> = ({
         // console.log(jsonData, resData);
         toast.dismiss();
         toast.success(await jsonData.message);
-
-        if (apiUrl.split("/")[2] === "update") {
+        if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           router.push(`/user/profile/${apiUrl.split("/")[3]}`);
         }
         if (apiUrl === "/api/users/login") {
