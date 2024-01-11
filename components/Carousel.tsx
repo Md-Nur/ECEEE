@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -8,9 +8,9 @@ import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { url } from "inspector";
+
 const Carousel = () => {
-  const [carosel, setCarosel] = useState([
+  const [carousel, setCarousel] = useState([
     {
       title: "ECEEE",
       slogan: "Electronics Club of Electrical & Electronic Engineering",
@@ -30,6 +30,14 @@ const Carousel = () => {
         "https://www.ru.ac.bd/eee/wp-content/uploads/sites/79/2023/12/53795388_341085076521395_7964072988419031040_n-scaled.jpg",
     },
   ]);
+
+  useEffect(() => {
+    fetch("api/carousel")
+      .then((res) => res.json())
+      .then((jdata) => {
+        if (jdata?.statusCode < 400) setCarousel(jdata);
+      });
+  }, [carousel]);
   return (
     <Swiper
       modules={[Autoplay, Navigation, Pagination]}
@@ -40,7 +48,7 @@ const Carousel = () => {
       autoplay
       loop={true}
     >
-      {carosel.map((item, index) => (
+      {carousel.map((item, index) => (
         <SwiperSlide key={index}>
           <div
             className="flex flex-col w-screen h-[100vw] max-h-[600px] items-center justify-center p-5"
@@ -51,7 +59,9 @@ const Carousel = () => {
               backgroundSize: "cover",
             }}
           >
-            <h1 className="text-4xl md:text-8xl text-white font-bold">{item.title}</h1>
+            <h1 className="text-4xl md:text-8xl text-white font-bold">
+              {item.title}
+            </h1>
             <p className="text-center md:text-xl text-white">{item.slogan}</p>
           </div>
         </SwiperSlide>

@@ -23,3 +23,22 @@ model User {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @default("")
+  images      String   @default("")
+  author      String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Carousel {
+  id        Int      @id @default(autoincrement())
+  title     String   @default("ECEEE")
+  slogan    String   @default("Electronics Club of Electrical & Electronic Engineering")
+  image     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

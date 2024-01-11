@@ -4,18 +4,20 @@ import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import { NextRequest, NextResponse } from "next/server";
 import { fileToUrl } from "../../utils/files.js";
-
+import { userSchema } from "../route.js";
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.formData();
     const files: any = reqBody.getAll("images");
 
-    const images = String(await fileToUrl(files));
+    let images: string = "";
+    if (files[0] && files[0].size > 1) images = await fileToUrl(files);
     const data = {
-      fullname: String(reqBody.get("fullname") || ""),
-      email: String(reqBody.get("email") || ""),
-      phone: String(reqBody.get("phone")),
-      password: String(reqBody.get("password")),
+      fullname: reqBody.get("fullname"),
+      email: reqBody.get("email"),
+      phone: reqBody.get("phone"),
+      images: images,
+      password: reqBody.get("password"),
     };
 
     if (!data.phone || !data.password)
@@ -23,10 +25,13 @@ export async function POST(req: NextRequest) {
         new ApiError(404, "Phone number and password is required"),
         { status: 404 }
       );
-
+    const validatedData = userSchema.safeParse(data);
+    if (!validatedData.success) {
+      return NextResponse.json(validatedData.error.errors, { status: 400 });
+    }
     const user = await prisma.user.findFirst({
       where: {
-        phone: data?.phone,
+        phone: validatedData.data?.phone,
       },
     });
     if (user) {
@@ -36,16 +41,13 @@ export async function POST(req: NextRequest) {
       );
     }
     const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(data.password, salt);
+    const hashedPassword = await bcryptjs.hash(
+      validatedData.data.password,
+      salt
+    );
 
     const newUser = await prisma.user.create({
-      data: {
-        fullname: data.fullname,
-        email: data.email,
-        images: images,
-        phone: data.phone,
-        password: hashedPassword,
-      },
+      data: validatedData.data,
     });
 
     if (!newUser)
@@ -54,7 +56,16 @@ export async function POST(req: NextRequest) {
       });
 
     return NextResponse.json(
-      new ApiResponse(201, newUser, "User created successfully"),
+      new ApiResponse(
+        201,
+        {
+          fullname: newUser.fullname,
+          phone: newUser.phone,
+          email: newUser.email,
+          images: newUser.images,
+        },
+        "User created successfully"
+      ),
       { status: 201 }
     );
   } catch (e: any) {

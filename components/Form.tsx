@@ -2,7 +2,6 @@
 import { ReactNode, FormEvent, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { User } from "@/app/user/profile/[id]/page";
 
 interface Props {
   children: ReactNode;
@@ -33,22 +32,31 @@ const Forms: React.FC<Props> = ({
       throw Error("There have no form data: " + formData);
     }
     toast.loading("Loading...");
-    const res = await fetch(apiUrl, {
-      method: method,
-      body: formData,
-    });
-    const jsonData = await res.json();
-    if (res.ok && (await jsonData.statusCode) < 400) {
-      const resData = await jsonData.data;
-      console.log(jsonData, resData);
-      toast.dismiss();
-      toast.success(await jsonData.message);
-      if (apiUrl === "/api/users/login") {
-        router.push(`/user/profile/${resData.id}`);
+    try {
+      const res = await fetch(apiUrl, {
+        method: method,
+        body: formData,
+      });
+      const jsonData = await res.json();
+      if (res.ok && (await jsonData.statusCode) < 400) {
+        const resData = await jsonData?.data;
+        // console.log(jsonData, resData);
+        toast.dismiss();
+        toast.success(await jsonData.message);
+
+        if (apiUrl.split("/")[2] === "update") {
+          router.push(`/user/profile/${apiUrl.split("/")[3]}`);
+        }
+        if (apiUrl === "/api/users/login") {
+          router.push(`/user/profile/${resData.id}`);
+        }
+      } else {
+        toast.dismiss();
+        toast.error(await jsonData.errors);
       }
-    } else {
+    } catch (error: any) {
       toast.dismiss();
-      toast.error(await jsonData.errors);
+      toast.error(error?.message);
     }
 
     ref.current?.reset();

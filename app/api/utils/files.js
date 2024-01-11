@@ -54,22 +54,24 @@ export const fileToUrl = async (files, folder) => {
   return images;
 };
 
-export const deleteFiles = async (images) => {
-  if (images.length < 1) {
-    throw new ApiError(404, "At least one image is required");
-  }
+export const deleteFiles = async (images, folder) => {
   let imagesUrl = [];
+  if (images.length < 1) {
+    return imagesUrl;
+    // throw new ApiError(404, "At least one image is required");
+  }
   images.forEach((img) => {
     const urlArr = img.split("/");
     const mainName = urlArr[urlArr.length - 1];
     const nameExt = mainName.split(".");
     const withoutExt = nameExt[0];
 
-    imagesUrl.push(`Gadgetify/products/${withoutExt}`);
+    imagesUrl.push(`ECEEE/${folder}/${withoutExt}`);
   });
   try {
     await deleteOnCloudinary(imagesUrl); // deleting the previous files
   } catch (e) {
-    throw new ApiError(404, `There have no file named: ${images}`, e);
+    return imagesUrl;
+    // throw new ApiError(404, `There have no file named: ${images}`, e);
   }
 };
