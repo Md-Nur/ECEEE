@@ -8,10 +8,17 @@ import { userSchema } from "../route";
 export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.formData();
-    const files: any = reqBody.getAll("images");
+    const file: any = reqBody.get("images");
 
     let images: string = "";
-    if (files[0] && files[0].size > 1) images = await fileToUrl(files);
+    if (file.size > 1)
+      try {
+        images = await fileToUrl(file, "users");
+      } catch (error: any) {
+        return NextResponse.json(
+          new ApiError(420, error.message || "Upload avatar failed")
+        );
+      }
     const data = {
       fullname: reqBody.get("fullname"),
       email: reqBody.get("email"),

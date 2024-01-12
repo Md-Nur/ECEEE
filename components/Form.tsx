@@ -38,14 +38,17 @@ const Forms: React.FC<Props> = ({
         body: formData,
       });
       const jsonData = await res.json();
-      if (res.ok && (await jsonData.statusCode) < 400) {
-        const resData = await jsonData?.data;
+      if (res.ok && jsonData.statusCode < 400) {
+        const resData = jsonData?.data;
         // console.log(jsonData, resData);
         toast.dismiss();
-        toast.success(await jsonData.message);
+        toast.success(jsonData.message);
 
+        // Router Section
         if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           router.push(`/user/profile/${apiUrl.split("/")[3]}`);
+        } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
+          router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
         } else if (apiUrl === "/api/users/login") {
           router.push(`/user/profile/${resData.id}`);
         } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
@@ -65,11 +68,11 @@ const Forms: React.FC<Props> = ({
   }
 
   return (
-    <section className="flex flex-col items-center justify-center bg-base-200 p-2 sm:p-5 md:p-10">
+    <section className="flex flex-col items-center justify-center p-2 sm:p-5 md:p-10">
       <h2 className="text-3xl font-bold">{headingName}</h2>
       <form
         ref={ref}
-        className="flex flex-col items-center justify-center  rounded-lg px-5 py-10 md:m-5 w-[80vw] gap-5 bg-base-100"
+        className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-[80vw] gap-5 bg-neutral"
         method={method}
         onSubmit={onSubmit}
       >

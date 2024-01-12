@@ -1,28 +1,22 @@
 "use client";
 import Forms from "@/components/Form";
 import { useEffect, useState } from "react";
+import { Event } from "@/app/activities/[slug]/[id]/page";
 
-interface Carousel {
-  id: string;
-  title: string;
-  slogan: string;
-  image: string;
-}
-
-const UpdateCarousel = ({ params }: { params: { id: string } }) => {
+const UpdateEvent = ({ params }: { params: { id: string } }) => {
   const Props: any = {
-    headingName: "Update Carousel",
+    headingName: "Update Event",
     method: "PUT",
-    apiUrl: `/api/carousel/${params.id}`,
-    submitName: "Update Carousel",
+    apiUrl: `/api/events/${params.id}`,
+    submitName: "Update Event",
   };
-  const [carousel, setCarousel] = useState<Carousel | null>();
+  const [event, setEvent] = useState<Event | null>();
   const [error, setError] = useState<any>();
   useEffect(() => {
-    fetch(`/api/carousel/${params.id}`)
+    fetch(`/api/events/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.statusCode < 400) setCarousel(data.data);
+        if (data.statusCode < 400) setEvent(data.data);
         else setError(data);
       });
   }, [params.id]);
@@ -33,7 +27,7 @@ const UpdateCarousel = ({ params }: { params: { id: string } }) => {
         <h1>{error.errors}</h1>
       </section>
     );
-  else if (!carousel)
+  else if (!event)
     return (
       <div className="h-screen flex justify-center items-center">
         <span className=" loading loading-infinity loading-lg"></span>
@@ -47,37 +41,43 @@ const UpdateCarousel = ({ params }: { params: { id: string } }) => {
         placeholder="Title"
         name="title"
         className="input input-bordered w-full"
-        value={carousel.title}
-        onChange={(e) => setCarousel({ ...carousel, title: e.target.value })}
+        value={event.title}
+        onChange={(e) => setEvent({ ...event, title: e.target.value })}
       />
-      <input
-        type="text"
-        className="input input-bordered w-full"
-        name="slogan"
-        placeholder="Slogan"
-        value={carousel.slogan}
-        onChange={(e) => setCarousel({ ...carousel, slogan: e.target.value })}
+      <textarea
+        placeholder="Description"
+        name="description"
+        className="input input-bordered w-full h-52 p-5"
+        value={event.description}
+        onChange={(e) => setEvent({ ...event, description: e.target.value })}
       />
-
       <label
         htmlFor="img"
         className="flex items-center justify-between w-full px-1 md:px-4 py-1 border rounded"
       >
-        <span className="hidden md:inline text-xs">
+        <span className="hidden sm:inline text-xs md:text-lg">
           Images: (If you don&apos;t want to update image remain this field
           blank){" "}
         </span>
         <input
           type="file"
           name="images"
-          className="file-input w-full mx-5 rounded max-h-10 file-input-success"
+          className="file-input w-full mx-5 rounded max-h-10"
           accept="image/png, image/jpeg"
           id="img"
-          // multiple
+          multiple
         />
       </label>
+      <input
+        type="text"
+        name="author"
+        placeholder="Author"
+        className="input input-bordered w-full"
+        value={event.author}
+        onChange={(e) => setEvent({ ...event, author: e.target.value })}
+      />
     </Forms>
   );
 };
 
-export default UpdateCarousel;
+export default UpdateEvent;

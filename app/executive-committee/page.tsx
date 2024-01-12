@@ -38,7 +38,7 @@ const Admin = () => {
           user.isAdmin && (
             <section
               key={user.id}
-              className="collapse collapse-plus bg-base-200 mx-auto my-3"
+              className="collapse bg-base-200 mx-auto my-3"
             >
               <input type="radio" name="my-accordion-3" />
               <div className="collapse-title text-xl font-medium">

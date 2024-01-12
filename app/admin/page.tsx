@@ -1,11 +1,17 @@
 import AddEvent from "@/components/admin/AddEvent";
 import UpdateCarousel from "@/components/admin/UpdateCarousel";
+import Link from "next/link";
 
 const Admin = () => {
   return (
-    <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-12">
-      <UpdateCarousel />
+    <main className="mx-auto my-12">
+      <div className="flex w-full pb-14">
+      <Link href="/admin/signin" className="btn btn-success mx-auto">
+        Register Memeber
+      </Link>
+      </div>
       <AddEvent />
+      <UpdateCarousel />
     </main>
   );
 };

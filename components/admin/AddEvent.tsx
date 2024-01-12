@@ -61,7 +61,7 @@ const AddEvent = () => {
         <input
           type="file"
           name="images"
-          className="file-input w-full mx-5 rounded max-h-10"
+          className="file-input w-full mx-5 rounded max-h-10 file-input-success"
           accept="image/png, image/jpeg"
           required
           id="img"

@@ -19,7 +19,7 @@ const Navbar = () => {
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost text-black lg:hidden"
+            className="btn btn-ghost lg:hidden"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +114,9 @@ const Navbar = () => {
             </li>
             <li>
               <Link href="/admin">Admin</Link>
+            </li>
+            <li>
+              <Link href="/admin/signin">Register</Link>
             </li>
           </ul>
         </div>

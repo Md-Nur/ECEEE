@@ -36,8 +36,8 @@ const UpdateCarousel = () => {
   }, []);
 
   return (
-    <section className="w-full flex flex-col bg-base-300 rounded-lg p-3">
-      <h2 className="text-4xl text-center font-bold">Carousel / Banner</h2>
+    <section className="w-full flex flex-col rounded-lg p-3">
+      <h2 className="text-3xl text-center font-bold">Carousel / Banner</h2>
       <Link href="/admin/carousel" className="btn btn-primary mx-auto my-5">
         Add Carousel Image
       </Link>
@@ -45,7 +45,7 @@ const UpdateCarousel = () => {
         {carousel.map((item, index) => (
           <div
             key={index}
-            className="card card-compact w-80 bg-base-100 shadow-xl m-3"
+            className="card card-compact w-80 bg-base-300 shadow-xl m-3"
           >
             <figure>
               <Image

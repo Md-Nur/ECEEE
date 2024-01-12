@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <Carousel />
-      <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-20 bg-base-300 p-[3vw] rounded-lg">
+      <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-20 bg-neutral p-[3vw] rounded-lg">
         <h2 className="text-4xl font-bold text-center my-3">
           Mission and vission
         </h2>

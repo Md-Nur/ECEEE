@@ -56,14 +56,14 @@ const Events = () => {
             ))
           : events.map((event) => (
               <div
-                className="w-[90%] mx-auto my-10 rounded-lg bg-gray-800 shadow-xl pb-1"
+                className="w-[90%] mx-auto my-10 rounded-lg bg-neutral shadow-xl pb-1"
                 key={event.id}
               >
-                <figure className="p-3 relative h-[500px]">
+                <figure className="p-3 relative h-[80vw] md:h-[30vw]">
                   <Link
                     href={`/activities/${event.title
                       .replace(/\s+/g, "-")
-                      .toLowerCase()}`}
+                      .toLowerCase()}/${event.id}`}
                   >
                     <Image
                       src={event.images[0]}
@@ -77,7 +77,7 @@ const Events = () => {
                   <Link
                     href={`/activities/${event.title
                       .replace(/\s+/g, "-")
-                      .toLowerCase()}`}
+                      .toLowerCase()}/${event.id}`}
                   >
                     <h2 className="text-3xl font-bold text-center">
                       {event.title}
@@ -86,12 +86,6 @@ const Events = () => {
                   <p className="my-3">{event.description.slice(0, 250)}..</p>
                   <p className="text-xs my-3">
                     {event.author || "Unknown"} | {event.createdAt.slice(0, 10)}
-                  <Link
-                    href={`/admin/update-event/${event.id}`}
-                    className="btn btn-info mx-2"
-                  >
-                    Update
-                  </Link>
                   </p>
                 </div>
               </div>
