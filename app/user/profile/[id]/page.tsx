@@ -44,12 +44,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
         <Image
           alt={user.fullname}
           src={user?.images}
-          height={400}
-          width={400}
-          className="max-w-sm rounded-lg shadow-2xl"
+          width={500}
+          height={500}
+          className="w-[95vw] h-[500px] max-w-[500px] rounded-lg shadow-2xl object-cover"
         />
         <div>
-          <h1 className="text-5xl font-bold">{user.fullname}</h1>
+          <h1 className="text-xl sm:text-5xl font-bold">{user.fullname}</h1>
           <p className="pt-6">Phone: {user.phone}</p>
           <p className="pb-6">Email: {user.email}</p>
           <div className="flex flex-wrap items-center justify-around gap-2">

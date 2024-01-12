@@ -14,7 +14,7 @@ interface User {
 const UserList = () => {
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("api/users")
+    fetch("/api/users")
       .then((res) => res.json())
       .then((jData) => jData.reverse())
       .then((data) => setUsers(data));
