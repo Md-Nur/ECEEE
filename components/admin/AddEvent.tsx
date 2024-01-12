@@ -1,38 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import toast from "react-hot-toast";
 import Forms from "../Form";
 
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  images: string;
-  author: string;
-}
-
 const AddEvent = () => {
-  const [event, setEvent] = useState<Event[]>([]);
-  const handleAdd = async (id: string) => {
-    toast.loading("Adding...");
-    const res = await fetch(`/api/event/${id}`, { method: "DELETE" });
-    const jData = await res.json();
-    toast.dismiss();
-    if (jData.statusCode < 400) toast.success(jData.message);
-    else toast.error(jData.errors);
-  };
-  useEffect(() => {
-    fetch("/api/event")
-      .then((res) => res.json())
-      .then((jdata) => {
-        toast.dismiss();
-        if (jdata?.statusCode < 400) setEvent(jdata.data);
-        else toast.error(jdata.errors);
-      });
-  }, [event, handleAdd]);
-
   return (
     <Forms
       {...{

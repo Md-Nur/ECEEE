@@ -36,7 +36,7 @@ const Event = ({ params }: { params: { id: string } }) => {
       })
       .then((data) => setEvent(data));
     // .catch((err) => setError(err));
-  }, []);
+  }, [params.id]);
   if (error)
     return (
       <div className="text-center text-error text-5xl py-52">
