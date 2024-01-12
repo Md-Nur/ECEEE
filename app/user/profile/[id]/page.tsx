@@ -22,7 +22,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
       .then((res) => res.json())
       .then((jdata) => {
         if (jdata.statusCode >= 400) setError(jdata);
-        return jdata;
+        return jdata.data;
       })
       .then((data) => setUser(data));
   }, [params.id, error]);

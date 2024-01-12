@@ -37,13 +37,14 @@ export async function POST(req: NextRequest) {
     const tokenData = {
       id: user.id,
       phone: user.phone,
+      isAdmim: user.isAdmin,
     };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
       expiresIn: "125d",
     });
 
     const res = NextResponse.json(
-      new ApiResponse(200, user, "Login Successfully"),
+      new ApiResponse(200, "", "Login Successfully"),
       {
         status: 200,
       }

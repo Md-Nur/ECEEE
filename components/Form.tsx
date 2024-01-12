@@ -45,7 +45,7 @@ const Forms: React.FC<Props> = ({
         toast.success(jsonData.message);
 
         // Router Section
-        if (apiUrl.split("/")[2] === "users" && method === "PUT") {
+        if (apiUrl.split("/")[2] === "users") {
           router.push(`/user/profile/${apiUrl.split("/")[3]}`);
         } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);

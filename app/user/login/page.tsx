@@ -2,15 +2,14 @@
 import Forms from "@/components/Form";
 
 const Login = () => {
-  
   const Props: any = {
-    headingName: "Signin User",
+    headingName: "Login Member",
     method: "POST",
     apiUrl: `/api/users/login`,
     submitName: "Login",
   };
   return (
-    <Forms {...Props}>
+    <Forms {...Props} >
       <input
         type="tel"
         placeholder="Phone Number"
@@ -22,8 +21,9 @@ const Login = () => {
         type="text"
         placeholder="Password"
         name="password"
-        className="input input-bordered w-full"
+        className="input input-bordered w-full mb-12"
         required
+
       />
     </Forms>
   );

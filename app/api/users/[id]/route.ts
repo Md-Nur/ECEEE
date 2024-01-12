@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: Props) {
       status: 404,
     });
 
-  return NextResponse.json(user, { status: 200 });
+  return NextResponse.json(new ApiResponse(200, user), { status: 200 });
 }
 
 export async function PUT(req: NextRequest, { params }: Props) {
