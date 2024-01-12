@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useUserAuth } from "@/app/context/userContext";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -23,6 +24,8 @@ export interface Event {
 const Event = ({ params }: { params: { id: string } }) => {
   const [event, setEvent] = useState<Event | null>(null);
   const [error, setError]: [any | Error, any] = useState();
+
+  const { userAuth } = useUserAuth();
 
   useEffect(() => {
     fetch(`/api/events/${params.id}`)
@@ -83,15 +86,17 @@ const Event = ({ params }: { params: { id: string } }) => {
             <p className="text-xs my-3">
               {event.author || "Unknown"} | {event.createdAt.slice(0, 10)}
             </p>
-            <div className="flex gap-1">
-              <Link
-                href={`/admin/event/${params.id || event.id}`}
-                className="btn btn-info mx-2"
-              >
-                Update
-              </Link>
-              <DeleteButton apiUrl={`/api/events/${params.id || event.id}`} />
-            </div>
+            {userAuth.isAdmin && (
+              <div className="flex gap-1">
+                <Link
+                  href={`/admin/event/${params.id || event.id}`}
+                  className="btn btn-info mx-2"
+                >
+                  Update
+                </Link>
+                <DeleteButton apiUrl={`/api/events/${params.id || event.id}`} />
+              </div>
+            )}
             <p className="my-3">{event.description}</p>
           </div>
         </div>

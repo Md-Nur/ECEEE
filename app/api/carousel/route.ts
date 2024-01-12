@@ -55,11 +55,16 @@ export async function POST(req: NextRequest) {
   );
 }
 
-export async function GET() {
-  const events = await prisma.carousel.findMany();
-  if (!events || events.length < 1)
+export async function GET(req: NextRequest) {
+  let carousel;
+  try {
+    carousel = await prisma.carousel.findMany();
+  } catch (error: any) {
+    return NextResponse.json(new ApiError(450, error.errors), { status: 450 });
+  }
+  if (!carousel || carousel.length < 1)
     return NextResponse.json(new ApiError(404, "There have no image"), {
       status: 404,
     });
-  return NextResponse.json(new ApiResponse(200, events), { status: 200 });
+  return NextResponse.json(new ApiResponse(200, carousel), { status: 200 });
 }

@@ -2,6 +2,7 @@
 import { ReactNode, FormEvent, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useUserAuth } from "@/app/context/userContext";
 
 interface Props {
   children: ReactNode;
@@ -20,6 +21,7 @@ const Forms: React.FC<Props> = ({
   submitName,
   ...props
 }) => {
+  const { setUserAuth } = useUserAuth();
   const [pending, setPending] = useState(false);
   const ref = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -39,21 +41,27 @@ const Forms: React.FC<Props> = ({
       });
       const jsonData = await res.json();
       if (res.ok && jsonData.statusCode < 400) {
-        const resData = jsonData?.data;
+        const resData = await jsonData?.data;
         // console.log(jsonData, resData);
         toast.dismiss();
-        toast.success(jsonData.message);
 
         // Router Section
-        if (apiUrl.split("/")[2] === "users") {
+
+        if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           router.push(`/user/profile/${apiUrl.split("/")[3]}`);
         } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
         } else if (apiUrl === "/api/users/login") {
+          setUserAuth({
+            id: resData.id,
+            images: resData.images,
+            isAdmin: resData.isAdmin,
+          });
           router.push(`/user/profile/${resData.id}`);
         } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
           router.push("/admin");
         }
+        toast.success(jsonData.message);
       } else {
         toast.dismiss();
         toast.error(await jsonData.errors);
@@ -71,6 +79,7 @@ const Forms: React.FC<Props> = ({
     <section className="flex flex-col items-center justify-center p-2 sm:p-5 md:p-10">
       <h2 className="text-3xl font-bold">{headingName}</h2>
       <form
+        autoComplete="off"
         ref={ref}
         className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-[80vw] gap-5 bg-neutral"
         method={method}

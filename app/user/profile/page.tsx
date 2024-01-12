@@ -2,16 +2,17 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   useEffect(() => {
     fetch("/api/users/me")
       .then((res) => res.json())
       .then((jData) => {
-        if (jData >= 400) router.push("/user/login");
+        if (jData.statusCode >= 400) router.push("/user/login");
         else router.push(`/user/profile/${jData.data.id}`);
       });
-  });
+  }, []);
+  
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <span className="loading loading-infinity loading-lg"></span>
@@ -19,4 +20,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

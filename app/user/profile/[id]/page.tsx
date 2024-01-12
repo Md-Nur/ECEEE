@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import DeleteButton from "@/components/admin/DeleteButton";
 import AdminBtn from "@/components/admin/AdminBtn";
+import { useUserAuth } from "@/app/context/userContext";
 
 export interface User {
   id: number;
@@ -15,6 +16,7 @@ export interface User {
 }
 
 const Profile = ({ params }: { params: { id: string } }) => {
+  const { userAuth } = useUserAuth();
   const [user, setUser] = useState<User | any>();
   const [error, setError] = useState<any>();
   useEffect(() => {
@@ -46,22 +48,30 @@ const Profile = ({ params }: { params: { id: string } }) => {
           src={user?.images}
           width={500}
           height={500}
-          className="w-[95vw] h-[500px] max-w-[500px] rounded-lg shadow-2xl object-cover"
+          className="w-[85vw] h-[500px] max-w-[500px] rounded-lg shadow-2xl object-cover"
         />
         <div>
           <h1 className="text-xl sm:text-5xl font-bold">{user.fullname}</h1>
           <p className="pt-6">Phone: {user.phone}</p>
           <p className="pb-6">Email: {user.email}</p>
           <div className="flex flex-wrap items-center justify-around gap-2">
-            <Link href={`/user/update/${user.id}`} className="btn btn-info">
-              Update
-            </Link>
-            <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
-            <AdminBtn
-              apiUrl={`/api/${user.isAdmin ? "remove-admin" : "make-admin"}/${
-                user.id || params.id
-              }`}
-            />
+            {userAuth?.id === user.id && (
+              <Link href={`/user/update/${user.id}`} className="btn btn-info">
+                Update
+              </Link>
+            )}
+            {userAuth?.isAdmim === true ? (
+              <>
+                <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
+                <AdminBtn
+                  apiUrl={`/api/${
+                    user.isAdmin ? "remove-admin" : "make-admin"
+                  }/${user.id || params.id}`}
+                />
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

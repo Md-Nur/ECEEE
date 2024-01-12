@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useUserAuth } from "../context/userContext";
 
 interface User {
   id: number;
@@ -12,6 +13,7 @@ interface User {
   isAdmin: boolean;
 }
 const UserList = () => {
+  const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
     fetch("/api/users")
@@ -66,12 +68,14 @@ const UserList = () => {
                   >
                     Veiew Profile
                   </Link>
-                  <Link
-                    href={`/user/update/${user.id}`}
-                    className="btn btn-info mx-1"
-                  >
-                    Update Profile
-                  </Link>
+                  {userAuth.id === user.id && (
+                    <Link
+                      href={`/user/update/${user.id}`}
+                      className="btn btn-info mx-1"
+                    >
+                      Update Profile
+                    </Link>
+                  )}
                 </div>
               </div>
             </section>

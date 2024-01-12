@@ -15,10 +15,11 @@ const Login = () => {
         placeholder="Phone Number"
         name="phone"
         className="input input-bordered w-full"
+        autoComplete="off"
         required
       />
       <input
-        type="text"
+        type="password"
         placeholder="Password"
         name="password"
         className="input input-bordered w-full mb-12"

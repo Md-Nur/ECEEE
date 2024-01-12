@@ -5,6 +5,7 @@ import ApiResponse from "../../utils/ApiResponse";
 import { deleteFiles, fileToUrl } from "../../utils/files";
 import { userSchema } from "../route";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken"
 
 interface Props {
   params: { id: string };
@@ -73,9 +74,9 @@ export async function PUT(req: NextRequest, { params }: Props) {
     validatedData.data.password,
     salt
   );
-
+let updatedUser
   try {
-    await prisma.user.update({
+    updatedUser = await prisma.user.update({
       where: { id: Number(params.id) },
       data: validatedData.data,
     });
@@ -83,9 +84,29 @@ export async function PUT(req: NextRequest, { params }: Props) {
     throw new ApiError(404, "User data did not update");
   }
 
-  return NextResponse.json(
-    new ApiResponse(202, "", "User details updated successfully")
-  );
+    //create token data
+    const tokenData = {
+      id: updatedUser.id,
+      images: updatedUser.images,
+      isAdmim: updatedUser.isAdmin,
+    };
+    const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
+      expiresIn: "125d",
+    });
+
+    const res = NextResponse.json(
+      new ApiResponse(202, "", "User details updated Successfully"),
+      {
+        status: 202,
+      }
+    );
+
+    res.cookies.set("token", token, {
+      httpOnly: true,
+    });
+    return res;
+
+  
 }
 
 export async function DELETE(req: NextRequest, { params }: Props) {

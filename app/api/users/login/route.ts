@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     //create token data
     const tokenData = {
       id: user.id,
-      phone: user.phone,
+      images: user.images,
       isAdmim: user.isAdmin,
     };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     });
 
     const res = NextResponse.json(
-      new ApiResponse(200, "", "Login Successfully"),
+      new ApiResponse(200, user, "Login Successfully"),
       {
         status: 200,
       }

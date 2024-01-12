@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/public/ru-logo.png";
+import { useUserAuth } from "../context/userContext";
 
 interface User {
   id: number;
@@ -13,13 +14,14 @@ interface User {
   isAdmin: boolean;
 }
 const Admin = () => {
+  const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
     fetch("api/users")
       .then((res) => res.json())
       .then((jData) => jData.reverse())
       .then((data) => setUsers(data));
-  }, [users]);
+  }, [userAuth]);
 
   if (!users)
     return (
@@ -70,12 +72,14 @@ const Admin = () => {
                   >
                     Veiew Profile
                   </Link>
-                  <Link
-                    href={`/user/update/${user.id}`}
-                    className="btn btn-info mx-1"
-                  >
-                    Update Profile
-                  </Link>
+                  {userAuth?.id === user.id && (
+                    <Link
+                      href={`/user/update/${user.id}`}
+                      className="btn btn-info mx-1"
+                    >
+                      Update Profile
+                    </Link>
+                  )}
                 </div>
               </div>
             </section>

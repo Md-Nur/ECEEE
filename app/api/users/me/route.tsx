@@ -8,7 +8,11 @@ export async function GET(req: NextRequest) {
   if (!data) {
     return NextResponse.json(new ApiError(420), { status: 420 });
   }
-  const decodedData = jwt.verify(data, process.env.JWT_SECRET_TOKEN!);
-  //   console.log(decodedData);
+  let decodedData: any;
+  try {
+    decodedData = jwt.verify(data, process.env.JWT_SECRET_TOKEN!);
+  } catch (error: any) {
+    return NextResponse.json(new ApiError(450, error.message), { status: 425 });
+  }
   return NextResponse.json(new ApiResponse(200, decodedData), { status: 200 });
 }

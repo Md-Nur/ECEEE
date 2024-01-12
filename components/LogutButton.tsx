@@ -1,8 +1,10 @@
 "use client";
+import { useUserAuth } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const LogoutButton = () => {
+  const { setUserAuth } = useUserAuth();
   const route = useRouter();
   const handleLogout = async () => {
     try {
@@ -13,8 +15,13 @@ const LogoutButton = () => {
       if (jData.statusCode >= 400) {
         toast.error(jData.errors);
       } else {
+        setUserAuth({
+          id: "",
+          images: "",
+          isAdmin: false,
+        });
+        route.push("/user/login");
         toast.success(jData?.message);
-        route.push("/");
       }
     } catch (error: any) {
       toast.dismiss();

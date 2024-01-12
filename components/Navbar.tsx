@@ -1,10 +1,19 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/ru-logo.png";
 import LogoutButton from "./LogutButton";
+import { useUserAuth } from "@/app/context/userContext";
+// import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const id = 2;
+  const { userAuth } = useUserAuth();
+  // const [avatar, setAvatar] = useState();
+
+  // useEffect(() => {
+  //   setAvatar(userAuth?.images);
+  // }, [userAuth]);
+
   return (
     <nav
       className="navbar sticky top-0 z-10 glass"
@@ -16,11 +25,7 @@ const Navbar = () => {
     >
       <div className="navbar-start">
         <div className="dropdown">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost lg:hidden"
-          >
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -90,9 +95,12 @@ const Navbar = () => {
             <div className="w-10 rounded-full">
               <Image
                 alt="Profile"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                height={40}
-                width={40}
+                src={
+                  userAuth?.images ||
+                  "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                }
+                height={50}
+                width={50}
               />
             </div>
           </div>
@@ -100,24 +108,36 @@ const Navbar = () => {
             tabIndex={0}
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
+            {userAuth && (
+              <li>
+                <Link
+                  href={`/user/profile/${userAuth.id}`}
+                  className="justify-between"
+                >
+                  Profile
+                </Link>
+              </li>
+            )}
+
             <li>
-              <Link href={`/user/profile/${id}`} className="justify-between">
-                Profile
-              </Link>
+              {userAuth ? (
+                <LogoutButton />
+              ) : (
+                <Link href="/user/login">Login</Link>
+              )}
             </li>
-            <li>
-              <Link href={`/user/update/${id}`}>Settings</Link>
-            </li>
-            <li>
-              <LogoutButton />
-              <Link href="/user/login">Login</Link>
-            </li>
+            {/* {userAuth?.isAdmin === true ? (
+              <> */}
             <li>
               <Link href="/admin">Admin</Link>
             </li>
             <li>
               <Link href="/admin/signin">Register</Link>
             </li>
+            {/* </>
+            ) : (
+              <></>
+            )} */}
           </ul>
         </div>
       </div>

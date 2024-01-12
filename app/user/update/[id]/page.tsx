@@ -2,8 +2,12 @@
 import Forms from "@/components/Form";
 import { useEffect, useState } from "react";
 import { User } from "@/app/user/profile/[id]/page";
+import { useUserAuth } from "@/app/context/userContext";
+import { useRouter } from "next/navigation";
 
 const UpdateUser = ({ params }: { params: { id: string } }) => {
+  const { userAuth } = useUserAuth();
+  const router = useRouter();
   const Props: any = {
     headingName: "Update User Infromation",
     method: "PUT",
@@ -13,15 +17,16 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<any>(null);
   useEffect(() => {
+    if (userAuth.id !== Number(params.id)) router.push(`/user/profile/${userAuth.id}`);
     fetch(`/api/users/${params.id}`)
       .then((res) => res.json())
       .then((jdata) => {
         if (jdata.statusCode >= 400) setError(jdata);
-        return jdata;
+        return jdata.data;
       })
       .then((data) => setUser(data));
     //   .catch((err) => setError(err));
-  }, [params.id]);
+  }, [params.id, userAuth]);
 
   if (error)
     return (

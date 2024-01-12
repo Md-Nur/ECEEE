@@ -1,19 +1,36 @@
 "use client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useUserAuth } from "@/app/context/userContext";
 
 const AdminBtn = ({ apiUrl }) => {
+  const { userAuth, setUserAuth } = useUserAuth();
   const router = useRouter();
   const isAdmin = apiUrl.split("/")[2] === "remove-admin";
 
   const changeAdmin = async () => {
-    toast.loading(isAdmin ? "Removing Admin" : "Making Admin...");
+    toast.loading(isAdmin ? "Removing Admin..." : "Making Admin...");
     const res = await fetch(apiUrl, {
       method: "PUT",
     });
     const jData = await res.json();
     toast.dismiss();
     if (jData.statusCode < 400) {
+      if (Number(apiUrl.split("/")[3]) === userAuth.id) {
+        if (isAdmin) {
+          setUserAuth({
+            id: userAuth.id,
+            phone: userAuth.phone,
+            isAdmin: false,
+          });
+        } else {
+          setUserAuth({
+            id: userAuth.id,
+            phone: userAuth.phone,
+            isAdmin: true,
+          });
+        }
+      }
       router.push("/executive-committee");
       toast.success(jData.message);
     } else toast.error(jData.errors);

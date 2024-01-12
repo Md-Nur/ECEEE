@@ -30,7 +30,7 @@ const UpdateCarousel = ({ params }: { params: { id: string } }) => {
   if (error)
     return (
       <section className="h-[500] flex items-center justify-center">
-        <h1>{error.errors}</h1>
+        <h1 className="text-error py-52 text-6xl">{error.errors}</h1>
       </section>
     );
   else if (!carousel)
