@@ -53,9 +53,9 @@ const Forms: React.FC<Props> = ({
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
         } else if (apiUrl === "/api/users/login") {
           setUserAuth({
-            id: resData.id,
-            images: resData.images,
-            isAdmin: resData.isAdmin,
+            id: resData?.id,
+            images: resData?.images,
+            isAdmin: resData?.isAdmin,
           });
           router.push(`/user/profile/${resData.id}`);
         } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {

@@ -2,13 +2,12 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { useUserAuth } from "../context/userContext";
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { userAuth } = useUserAuth();
-  const [admin, setAdmin] = useState<any>(userAuth.isAdmim);
+  const [admin, setAdmin] = useState<any>(userAuth?.isAdmin);
 
   useEffect(() => {
     fetch("/api/users/me")
