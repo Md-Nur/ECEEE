@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useUserAuth } from "../context/userContext";
 
-const layout = ({ children }: { children: ReactNode }) => {
+const AdminLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { userAuth } = useUserAuth();
   const [admin, setAdmin] = useState<any>(userAuth.isAdmim);
@@ -18,7 +18,7 @@ const layout = ({ children }: { children: ReactNode }) => {
         else return jData.data;
       })
       .then((data) => setAdmin(data));
-  }, [userAuth]);
+  }, [userAuth, router]);
   if (!admin)
     return (
       <div className="w-full py-52 flex justify-center items-center">
@@ -35,4 +35,4 @@ const layout = ({ children }: { children: ReactNode }) => {
   }
 };
 
-export default layout;
+export default AdminLayout;

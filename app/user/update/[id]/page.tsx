@@ -26,7 +26,7 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
       })
       .then((data) => setUser(data));
     //   .catch((err) => setError(err));
-  }, [params.id, userAuth]);
+  }, [params.id, userAuth, router]);
 
   if (error)
     return (
