@@ -43,11 +43,13 @@ const Forms: React.FC<Props> = ({
         // console.log(jsonData, resData);
         toast.dismiss();
         toast.success(await jsonData.message);
+
         if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           router.push(`/user/profile/${apiUrl.split("/")[3]}`);
-        }
-        if (apiUrl === "/api/users/login") {
+        } else if (apiUrl === "/api/users/login") {
           router.push(`/user/profile/${resData.id}`);
+        } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
+          router.push("/admin");
         }
       } else {
         toast.dismiss();

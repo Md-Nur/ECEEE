@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import DeleteButton from "@/components/admin/DeleteButton";
+import AdminBtn from "@/components/admin/AdminBtn";
 
 export interface User {
   id: number;
@@ -9,6 +11,7 @@ export interface User {
   email: string;
   phone: string;
   image: string;
+  isAdmin: boolean;
 }
 
 const Profile = ({ params }: { params: { id: string } }) => {
@@ -49,9 +52,17 @@ const Profile = ({ params }: { params: { id: string } }) => {
           <h1 className="text-5xl font-bold">{user.fullname}</h1>
           <p className="pt-6">Phone: {user.phone}</p>
           <p className="pb-6">Email: {user.email}</p>
-          <Link href={`/user/update/${user.id}`} className="btn btn-primary">
-            Update
-          </Link>
+          <div className="flex flex-wrap items-center justify-around gap-2">
+            <Link href={`/user/update/${user.id}`} className="btn btn-info">
+              Update
+            </Link>
+            <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
+            <AdminBtn
+              apiUrl={`/api/${user.isAdmin ? "remove-admin" : "make-admin"}/${
+                user.id || params.id
+              }`}
+            />
+          </div>
         </div>
       </div>
     </main>

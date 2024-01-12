@@ -12,7 +12,7 @@ const Events = () => {
     {
       id: number;
       title: string;
-      auther: string;
+      author: string;
       description: string;
       images: string[];
       createdAt: string;
@@ -37,16 +37,18 @@ const Events = () => {
   }, [error, events]);
   if (error)
     return (
-      <div className="text-center text-error text-5xl py-52">{error?.errors}</div>
+      <div className="text-center text-error text-5xl py-52">
+        {error?.errors}
+      </div>
     );
   return (
-    <section className="w-screen">
+    <section className="">
       <h1 className="text-3xl font-bold text-center my-9">Activites</h1>
-      <div className="mx-auto w-[90vw] max-w-screen-md">
+      <div className="mx-auto w-[95vw] max-w-screen-lg py-1 my-5">
         {events.length < 1
           ? [1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col gap-4 h-[500px]  shadow">
-                <div className="skeleton h-72 w-full"></div>
+              <div key={i} className="flex flex-col gap-4 shadow">
+                <div className="skeleton h-[500px] w-full"></div>
                 <div className="skeleton h-4 w-44 ml-5"></div>
                 <div className="skeleton h-4 w-44 ml-5"></div>
                 <div className="skeleton h-10 w-44 ml-7 md:ml-48"></div>
@@ -54,10 +56,10 @@ const Events = () => {
             ))
           : events.map((event) => (
               <div
-                className="card w-[95vw] max-w-md h-[500px] m-1 md:m-5 bg-base-100 shadow-xl"
+                className="w-[90%] mx-auto my-10 rounded-lg bg-gray-800 shadow-xl pb-1"
                 key={event.id}
               >
-                <figure>
+                <figure className="p-3 relative h-[500px]">
                   <Link
                     href={`/activities/${event.title
                       .replace(/\s+/g, "-")
@@ -66,29 +68,31 @@ const Events = () => {
                     <Image
                       src={event.images[0]}
                       alt={event.images[0]}
-                      width={500}
-                      height={500}
+                      fill
+                      className="object-cover overflow-hidden rounded-t-lg"
                     />
                   </Link>
                 </figure>
-                <div className="card-body">
+                <div className="p-5">
                   <Link
                     href={`/activities/${event.title
                       .replace(/\s+/g, "-")
                       .toLowerCase()}`}
                   >
-                    <h2 className="card-title">{event.title}</h2>
+                    <h2 className="text-3xl font-bold text-center">
+                      {event.title}
+                    </h2>
                   </Link>
-                  <p className="text-xs">
-                    {event.auther} | {event.createdAt}
-                  </p>
-                  <p>{event.description.slice(0, 10)}..</p>
+                  <p className="my-3">{event.description.slice(0, 250)}..</p>
+                  <p className="text-xs my-3">
+                    {event.author || "Unknown"} | {event.createdAt.slice(0, 10)}
                   <Link
                     href={`/admin/update-event/${event.id}`}
-                    className="btn btn-info"
+                    className="btn btn-info mx-2"
                   >
                     Update
                   </Link>
+                  </p>
                 </div>
               </div>
             ))}

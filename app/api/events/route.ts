@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
-import { fileToUrl } from "@/app/api/utils/files";
+import { filesToUrls } from "@/app/api/utils/files";
 import ApiError from "@/app/api/utils/ApiError";
 import ApiResponse from "@/app/api/utils/ApiResponse";
 
@@ -9,13 +9,22 @@ export const eventSchema: any = z.object({
   title: z.string(),
   description: z.string().min(10),
   images: z.array(z.string()),
-  auther: z.string(),
+  author: z.string(),
 });
 
 export async function POST(req: NextRequest) {
   const data = await req.formData();
   const files: any = data.getAll("images");
-  const images = await fileToUrl(files);
+
+  let images: string[];
+
+  try {
+    images = await filesToUrls(files, "events");
+  } catch (error: any) {
+    return NextResponse.json(
+      new ApiError(420, error.message || "can't upload the images")
+    );
+  }
 
   if (!images || images.length < 1) {
     return NextResponse.json(new ApiError(400, "Images are required"), {
@@ -23,27 +32,33 @@ export async function POST(req: NextRequest) {
     });
   }
   const body = {
-    name: data.get("name"),
+    title: data.get("title"),
     description: data.get("description"),
     images: images,
-    auther: data.get("auther") || "",
+    author: data.get("author") || "",
   };
 
   const validatedData = eventSchema.safeParse(body);
   if (!validatedData.success) {
-    return NextResponse.json(new ApiError(400, validatedData.error.errors[0]), {
-      status: 400,
-    });
+    return NextResponse.json(
+      new ApiError(400, validatedData.error.errors[0] || "Invalid type"),
+      {
+        status: 460,
+      }
+    );
   }
-  const event = await prisma.event.create({ data: validatedData.data });
-
-  if (!event) {
+  try {
+    await prisma.event.create({ data: validatedData.data });
+  } catch (error: any) {
     return NextResponse.json(
       new ApiError(
-        500,
-        "There have some porblem to create this event in database"
+        420,
+        error.message ||
+          "There have some porblem to create this event in database"
       ),
-      { status: 500 }
+      {
+        status: 400,
+      }
     );
   }
 
@@ -56,7 +71,7 @@ export async function POST(req: NextRequest) {
   );
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const events = await prisma.event.findMany();
   if (!events || events.length < 1)
     return NextResponse.json(new ApiError(404, "There have no events"), {

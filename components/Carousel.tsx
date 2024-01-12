@@ -32,10 +32,10 @@ const Carousel = () => {
   ]);
 
   useEffect(() => {
-    fetch("api/carousel")
+    fetch("/api/carousel")
       .then((res) => res.json())
       .then((jdata) => {
-        if (jdata?.statusCode < 400) setCarousel(jdata);
+        if (jdata?.statusCode < 400) setCarousel(jdata.data);
       });
   }, [carousel]);
   return (
@@ -62,7 +62,7 @@ const Carousel = () => {
             <h1 className="text-4xl md:text-8xl text-white font-bold">
               {item.title}
             </h1>
-            <p className="text-center md:text-xl text-white">{item.slogan}</p>
+            <p className="text-center md:text-xl my-5 text-white">{item.slogan}</p>
           </div>
         </SwiperSlide>
       ))}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { productSchema } from "../route";
+import { eventSchema } from "../route";
 import prisma from "@/prisma/client";
-import { deleteFiles, fileToUrl } from "../../utils/files";
+import { deleteFiles, filesToUrls } from "../../utils/files";
 import ApiError from "@/app/api/utils/ApiError";
 import ApiResponse from "@/app/api/utils/ApiResponse";
 
@@ -9,15 +9,15 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const product = await prisma.product.findUnique({
+  const event = await prisma.event.findUnique({
     where: { id: Number(params.id) },
   });
 
-  if (!product) {
+  if (!event) {
     return NextResponse.json({ message: "No product is found with this Id!!" });
   }
 
-  return NextResponse.json(product);
+  return NextResponse.json(new ApiResponse(200, event));
 }
 
 export async function PUT(
@@ -27,7 +27,7 @@ export async function PUT(
   const data = await req.formData();
   const files: any = data.getAll("images");
 
-  const prevData = await prisma.product.findUnique({
+  const prevData = await prisma.event.findUnique({
     where: {
       id: parseInt(params.id),
     },
@@ -35,44 +35,53 @@ export async function PUT(
 
   let images: string[] = prevData?.images!;
 
-  if (files[0] && files && files[0].size > 1) {
+  if (files[0].size > 1) {
     try {
       await deleteFiles(images); // deleting the previous files
-    } catch {
-      throw new ApiError(420, "There have a problem to delete previous images");
+    } catch (e: any) {
+      return NextResponse.json(
+        new ApiError(
+          420,
+          e.message || "There have a problem to delete previous images"
+        ),
+        { status: 420 }
+      );
     }
     try {
-      images = await fileToUrl(files);
+      images = await filesToUrls(files, "events");
     } catch {
-      throw new ApiError(404, "There have a problem to upload on cloudinary");
+      return NextResponse.json(
+        new ApiError(404, "There have a problem to upload on cloudinary"),
+        { status: 404 }
+      );
     }
   }
   const body = {
-    name: data.get("name"),
-    price: Number(data.get("price")),
+    title: data.get("title"),
     description: data.get("description"),
     images: images,
-    brand: data.get("brand") || "",
-    category: data.get("category") || "",
-    stockQuantity: Number(data.get("stockQuantity")),
+    author: data.get("author") || "",
   };
 
-  const validatedData = productSchema.safeParse(body);
+  const validatedData = eventSchema.safeParse(body);
   if (!validatedData.success) {
     return NextResponse.json(validatedData.error.errors, { status: 400 });
   }
 
   try {
-    await prisma.product.update({
+    await prisma.event.update({
       where: { id: Number(params.id) },
       data: validatedData.data,
     });
-  } catch {
-    throw new ApiError(404, "Product not found");
+  } catch (e: any) {
+    return NextResponse.json(
+      new ApiError(404, e.message || "Event not found"),
+      { status: 404 }
+    );
   }
 
   return NextResponse.json(
-    new ApiResponse(202, "", "Product details update successfully")
+    new ApiResponse(202, "", "Event details update successfully")
   );
 }
 
@@ -80,25 +89,34 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const prevData = await prisma.product.findFirst({
+  const prevData = await prisma.event.findFirst({
     where: {
       id: parseInt(params.id),
     },
   });
 
   let images: string[] = prevData?.images!;
+  try {
+    await deleteFiles(images);
+  } catch (e: any) {
+    return NextResponse.json(
+      new ApiError(450, e.message || "Can't delete previous images"),
+      { status: 450 }
+    );
+  } // deleting the previous files
 
-  await deleteFiles(images); // deleting the previous files
-
-  const product = await prisma.product.delete({
-    where: { id: Number(params.id) },
-  });
-
-  if (!product || !prevData) {
-    throw new ApiError(400, "Your product can't be deleted");
+  try {
+    await prisma.event.delete({
+      where: { id: Number(params.id) },
+    });
+  } catch (e: any) {
+    return NextResponse.json(
+      new ApiError(500, e.message || "This event can't be deleted"),
+      { status: 500 }
+    );
   }
 
   return NextResponse.json(
-    new ApiResponse(202, "", "Product deleted successfully")
+    new ApiResponse(202, "", "Event deleted successfully")
   );
 }

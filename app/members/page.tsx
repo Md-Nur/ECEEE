@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/public/ru-logo.png";
 
 interface User {
   id: number;
@@ -16,6 +15,7 @@ const UserList = () => {
   useEffect(() => {
     fetch("api/users")
       .then((res) => res.json())
+      .then((jData) => jData.reverse())
       .then((data) => setUsers(data));
   }, [users]);
 
@@ -42,9 +42,11 @@ const UserList = () => {
                   <div className="w-14 mask mask-squircle">
                     <Image
                       alt={user.fullname}
-                      height={30}
-                      width={30}
-                      src={user.images || logo}
+                      fill
+                      src={
+                        user.images ||
+                        "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                      }
                     />
                   </div>
                 </div>
@@ -66,7 +68,7 @@ const UserList = () => {
               </Link>
               <Link
                 href={`/user/update/${user.id}`}
-                className="btn btn-secondary mx-1"
+                className="btn btn-info mx-1"
               >
                 Update Profile
               </Link>

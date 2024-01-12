@@ -6,10 +6,21 @@ import LogoutButton from "./LogutButton";
 const Navbar = () => {
   const id = 2;
   return (
-    <nav className="navbar bg-base-100 sticky top-0 z-10">
+    <nav
+      className="navbar sticky top-0 z-10 glass"
+      style={{
+        backgroundImage: `url('/fadebg.png')`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost text-black lg:hidden"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -46,8 +57,8 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost text-xl">
-          ECEEE
+        <Link href="/" className="text-xl font-bold text-black w-12">
+          <Image alt="Profile" src={logo} />
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -77,7 +88,12 @@ const Navbar = () => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <Image alt="Profile" src={logo} />
+              <Image
+                alt="Profile"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                height={40}
+                width={40}
+              />
             </div>
           </div>
           <ul
@@ -96,7 +112,7 @@ const Navbar = () => {
               <LogoutButton />
               <Link href="/user/login">Login</Link>
             </li>
-            <li>              
+            <li>
               <Link href="/admin">Admin</Link>
             </li>
           </ul>

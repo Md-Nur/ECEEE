@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, { params }: Props) {
 
 export async function PUT(req: NextRequest, { params }: Props) {
   const data = await req.formData();
-  const files: any = data.getAll("images");
+  const file: any = data.get("images");
 
   const prevData = await prisma.user.findUnique({
     where: {
@@ -32,22 +32,25 @@ export async function PUT(req: NextRequest, { params }: Props) {
     },
   });
 
-  let images: string = prevData?.images!;
+  let image: string = prevData?.images!;
 
-  if (files[0] && files[0].size > 1) {
+  if (file.size > 1) {
     try {
-      await deleteFiles(images, "users"); // deleting the previous files
-    } catch {
+      await deleteFiles(image, "users"); // deleting the previous files
+    } catch (e: any) {
       return NextResponse.json(
-        new ApiError(420, "There have a problem to delete previous images"),
+        new ApiError(
+          420,
+          e.message || "There have a problem to delete previous images"
+        ),
         { status: 420 }
       );
     }
     try {
-      images = await fileToUrl(files, "users");
-    } catch {
+      image = await fileToUrl(file, "users");
+    } catch (e: any) {
       return NextResponse.json(
-        new ApiError(420, "There have a problem to upload avatar"),
+        new ApiError(420, e.message || "There have a problem to upload avatar"),
         { status: 420 }
       );
     }
@@ -55,7 +58,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
   const body = {
     fullname: data.get("fullname"),
     phone: data.get("phone"),
-    images: images,
+    images: image,
     email: data.get("email") || "",
     password: data.get("password") || "",
     stockQuantity: Number(data.get("stockQuantity")),
@@ -82,5 +85,37 @@ export async function PUT(req: NextRequest, { params }: Props) {
 
   return NextResponse.json(
     new ApiResponse(202, "", "User details updated successfully")
+  );
+}
+
+export async function DELETE(req: NextRequest, { params }: Props) {
+  const prevData = await prisma.user.findFirst({
+    where: {
+      id: parseInt(params.id),
+    },
+  });
+
+  let image: string = prevData?.images!;
+  try {
+    await deleteFiles(image, "user");
+  } catch (error: any) {
+    return NextResponse.json(
+      new ApiError(420, error.message || "Can't delete images")
+    );
+  } // deleting the previous files
+
+  const product = await prisma.user.delete({
+    where: { id: Number(params.id) },
+  });
+
+  if (!product || !prevData) {
+    return NextResponse.json(new ApiError(400, "User can't be deleted"), {
+      status: 400,
+    });
+  }
+
+  return NextResponse.json(
+    new ApiResponse(202, "", "User deleted successfully"),
+    { status: 202 }
   );
 }

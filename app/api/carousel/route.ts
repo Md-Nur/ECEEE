@@ -5,7 +5,7 @@ import { z } from "zod";
 import prisma from "@/prisma/client";
 import ApiResponse from "../utils/ApiResponse";
 
-const carouselSchema = z.object({
+export const carouselSchema = z.object({
   title: z.string(),
   slogan: z.string(),
   image: z.string(),
@@ -13,8 +13,9 @@ const carouselSchema = z.object({
 
 export async function POST(req: NextRequest) {
   const data = await req.formData();
-  const files: any = data.getAll("images");
-  const image = await fileToUrl(files);
+  const file: any = data.get("images");
+
+  const image = await fileToUrl(file, "carousel");
 
   if (!image || image.length < 1) {
     return NextResponse.json(new ApiError(400, "Images are required"), {
@@ -60,5 +61,5 @@ export async function GET() {
     return NextResponse.json(new ApiError(404, "There have no image"), {
       status: 404,
     });
-  return NextResponse.json(events, { status: 200 });
+  return NextResponse.json(new ApiResponse(200, events), { status: 200 });
 }
