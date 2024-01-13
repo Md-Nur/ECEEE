@@ -7,7 +7,7 @@ import { useUserAuth } from "../context/userContext";
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { userAuth } = useUserAuth();
-  const [admin, setAdmin] = useState<any>(userAuth?.isAdmin);
+  const [admin, setAdmin] = useState<boolean>(userAuth?.isAdmin);
 
   useEffect(() => {
     fetch("/api/users/me")
@@ -16,15 +16,15 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         if (jData.statusCode >= 400) router.push("/user/login");
         else return jData.data;
       })
-      .then((data) => setAdmin(data));
+      .then((data) => setAdmin(data?.isAdmin));
   }, [userAuth, router]);
-  if (!admin)
+  if (!userAuth)
     return (
       <div className="w-full py-52 flex justify-center items-center">
         <span className="loading loading-infinity loading-lg"></span>
       </div>
     );
-  else if (admin?.isAdmim) return <>{children}</>;
+  else if (admin) return <>{children}</>;
   else {
     return (
       <h1 className="text-error text-center text-7xl py-52">

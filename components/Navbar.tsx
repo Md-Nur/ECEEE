@@ -108,7 +108,7 @@ const Navbar = () => {
             tabIndex={0}
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
-            {userAuth && (
+            {userAuth.id !== 0 && (
               <li>
                 <Link
                   href={`/user/profile/${userAuth.id}`}
@@ -120,24 +120,22 @@ const Navbar = () => {
             )}
 
             <li>
-              {userAuth ? (
+              {userAuth.id !== 0 ? (
                 <LogoutButton />
               ) : (
                 <Link href="/user/login">Login</Link>
               )}
             </li>
-            {/* {userAuth?.isAdmin === true ? (
-              <> */}
-            <li>
-              <Link href="/admin">Admin</Link>
-            </li>
-            <li>
-              <Link href="/admin/signin">Register</Link>
-            </li>
-            {/* </>
-            ) : (
-              <></>
-            )} */}
+            {userAuth?.isAdmin && (
+              <>
+                <li>
+                  <Link href="/admin">Admin</Link>
+                </li>
+                <li>
+                  <Link href="/admin/signin">Register</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

@@ -4,6 +4,13 @@ import ApiError from "../../utils/ApiError";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../../utils/ApiResponse";
 import bcryptjs from "bcryptjs";
+import { boolean, z } from "zod";
+
+export const Tokentype = z.object({
+  id: z.number(),
+  images: z.string(),
+  isAdmin: z.boolean(),
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -37,9 +44,19 @@ export async function POST(req: NextRequest) {
     const tokenData = {
       id: user.id,
       images: user.images,
-      isAdmim: user.isAdmin,
+      isAdmin: user.isAdmin,
     };
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
+    const verifiedToken: any = Tokentype.safeParse(tokenData);
+    if (!verifiedToken.success) {
+      return NextResponse.json(
+        new ApiError(
+          425,
+          verifiedToken.error?.errors[0] || "Invalid token type"
+        ),
+        { status: 425 }
+      );
+    }
+    const token = jwt.sign(verifiedToken.data, process.env.JWT_SECRET_TOKEN!, {
       expiresIn: "125d",
     });
 

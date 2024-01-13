@@ -48,7 +48,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
           src={user?.images}
           width={500}
           height={500}
-          className="w-[85vw] h-[500px] max-w-[500px] rounded-lg shadow-2xl object-cover"
+          className="w-[85vw] h-[85vw] max-h-[500px] max-w-[500px] rounded-lg shadow-2xl object-cover"
         />
         <div>
           <h1 className="text-xl sm:text-5xl font-bold">{user.fullname}</h1>
@@ -60,7 +60,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 Update
               </Link>
             )}
-            {userAuth?.isAdmim === true ? (
+            {userAuth?.isAdmin === true ? (
               <>
                 <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
                 <AdminBtn

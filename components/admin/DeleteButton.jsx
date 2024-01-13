@@ -1,13 +1,21 @@
 "use client";
 import { toast } from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
+import { useUserAuth } from "@/app/context/userContext";
 
 const DeleteButton = ({ apiUrl }) => {
   const router = useRouter();
   const path = usePathname();
+  const { userAuth } = useUserAuth();
 
   const handleDelete = async () => {
     toast.loading("Deleting...");
+    if (Number(apiUrl.split("/")[3]) === userAuth.id) {
+      toast.dismiss();
+      toast.error("User can't remove himself from user");
+      router.push(`/user/profile/${userAuth.id || ""}`);
+      return;
+    }
     const res = await fetch(apiUrl, { method: "DELETE" });
     const jData = await res.json();
     toast.dismiss();

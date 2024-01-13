@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, FormEvent, useState, useRef } from "react";
+import { ReactNode, FormEvent, useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/app/context/userContext";
@@ -21,7 +21,7 @@ const Forms: React.FC<Props> = ({
   submitName,
   ...props
 }) => {
-  const { setUserAuth } = useUserAuth();
+  const { userAuth, setUserAuth } = useUserAuth();
   const [pending, setPending] = useState(false);
   const ref = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -42,13 +42,17 @@ const Forms: React.FC<Props> = ({
       const jsonData = await res.json();
       if (res.ok && jsonData.statusCode < 400) {
         const resData = await jsonData?.data;
-        // console.log(jsonData, resData);
         toast.dismiss();
 
         // Router Section
-
         if (apiUrl.split("/")[2] === "users" && method === "PUT") {
-          router.push(`/user/profile/${apiUrl.split("/")[3]}`);
+          setUserAuth({
+            id: resData?.id,
+            images: resData?.images,
+            isAdmin: resData?.isAdmin,
+          });
+          
+          router.push(`/user/profile/${resData.id || ""}`);
         } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
         } else if (apiUrl === "/api/users/login") {
@@ -57,6 +61,7 @@ const Forms: React.FC<Props> = ({
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
+          
           router.push(`/user/profile/${resData.id}`);
         } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
           router.push("/admin");

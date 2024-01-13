@@ -16,27 +16,15 @@ export async function PUT(
         isAdmin: true,
       },
     });
-    //create token data
-    const tokenData = {
-      id: user.id,
-      images: user.images,
-      isAdmim: user.isAdmin,
-    };
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
-      expiresIn: "125d",
-    });
+   
 
-    const res = NextResponse.json(
+    return NextResponse.json(
       new ApiResponse(200, user, "This user is now a admin"),
       {
         status: 200,
       }
     );
 
-    res.cookies.set("token", token, {
-      httpOnly: true,
-    });
-    return res;
   } catch (e: any) {
     return NextResponse.json(
       new ApiError(420, e.message || "Can't make this user as a admin"),

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const LogoutButton = () => {
-  const { setUserAuth } = useUserAuth();
+  const { userAuth, setUserAuth } = useUserAuth();
   const route = useRouter();
   const handleLogout = async () => {
     try {
@@ -16,7 +16,7 @@ const LogoutButton = () => {
         toast.error(jData.errors);
       } else {
         setUserAuth({
-          id: "",
+          id: 0,
           images: "",
           isAdmin: false,
         });

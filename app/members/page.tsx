@@ -34,7 +34,7 @@ const UserList = () => {
       <h1 className="text-center text-4xl font-bold mb-5">Members</h1>
       {users.map(
         (user) =>
-          !user.isAdmin && (
+          !user?.isAdmin && (
             <section key={user.id} className="collapse bg-neutral mx-auto my-3">
               <input type="radio" name="my-accordion-3" />
               <div className="collapse-title text-xl font-medium">
@@ -68,7 +68,7 @@ const UserList = () => {
                   >
                     Veiew Profile
                   </Link>
-                  {userAuth.id === user.id && (
+                  {userAuth?.id === user.id && (
                     <Link
                       href={`/user/update/${user.id}`}
                       className="btn btn-info mx-1"

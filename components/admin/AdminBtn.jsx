@@ -10,28 +10,20 @@ const AdminBtn = ({ apiUrl }) => {
 
   const changeAdmin = async () => {
     toast.loading(isAdmin ? "Removing Admin..." : "Making Admin...");
+    if (Number(apiUrl.split("/")[3]) === userAuth.id) {
+      toast.dismiss()
+      toast.error("Admin can't remove himself from admin");
+      router.push(`/user/profile/${userAuth.id || ""}`);
+      return;
+    }
     const res = await fetch(apiUrl, {
       method: "PUT",
     });
     const jData = await res.json();
     toast.dismiss();
     if (jData.statusCode < 400) {
-      if (Number(apiUrl.split("/")[3]) === userAuth.id) {
-        if (isAdmin) {
-          setUserAuth({
-            id: userAuth.id,
-            phone: userAuth.phone,
-            isAdmin: false,
-          });
-        } else {
-          setUserAuth({
-            id: userAuth.id,
-            phone: userAuth.phone,
-            isAdmin: true,
-          });
-        }
-      }
-      router.push("/executive-committee");
+      if (isAdmin) router.push("/members");
+      else router.push("/executive-committee");
       toast.success(jData.message);
     } else toast.error(jData.errors);
   };

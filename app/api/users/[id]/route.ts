@@ -5,16 +5,24 @@ import ApiResponse from "../../utils/ApiResponse";
 import { deleteFiles, fileToUrl } from "../../utils/files";
 import { userSchema } from "../route";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import { Tokentype } from "../login/route";
 
 interface Props {
   params: { id: string };
 }
 
 export async function GET(req: NextRequest, { params }: Props) {
-  const user = await prisma.user.findUnique({
-    where: { id: Number(params.id) },
-  });
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: Number(params.id) },
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      new ApiError(401, error.message || "Can't find details")
+    );
+  }
   if (!user || user === null)
     return NextResponse.json(new ApiError(404, "User not found"), {
       status: 404,
@@ -56,57 +64,72 @@ export async function PUT(req: NextRequest, { params }: Props) {
       );
     }
   }
-  const body = {
+  let body: any = {
     fullname: data.get("fullname"),
     phone: data.get("phone"),
     images: image,
     email: data.get("email") || "",
     password: data.get("password") || "",
-    stockQuantity: Number(data.get("stockQuantity")),
   };
 
-  const validatedData = userSchema.safeParse(body);
+  const validatedData: any = userSchema.safeParse(body);
   if (!validatedData.success) {
-    return NextResponse.json(validatedData.error.errors, { status: 400 });
+    return NextResponse.json(
+      new ApiError(400, validatedData.error.errors[0] || "Invalid Input"),
+      {
+        status: 400,
+      }
+    );
   }
-  const salt = await bcryptjs.genSalt(10);
-  validatedData.data.password = await bcryptjs.hash(
-    validatedData.data.password,
-    salt
-  );
-let updatedUser
+
+  if (body.password === "") {
+    delete validatedData.data.password;
+  } else {
+    const salt = await bcryptjs.genSalt(10);
+    validatedData.data.password = await bcryptjs.hash(
+      validatedData.data.password,
+      salt
+    );
+  }
+
+  let updatedUser;
   try {
     updatedUser = await prisma.user.update({
       where: { id: Number(params.id) },
       data: validatedData.data,
     });
-  } catch {
-    throw new ApiError(404, "User data did not update");
+  } catch (e: any) {
+    throw new ApiError(404, e.message || "User data did not update");
   }
 
-    //create token data
-    const tokenData = {
-      id: updatedUser.id,
-      images: updatedUser.images,
-      isAdmim: updatedUser.isAdmin,
-    };
-    const token = jwt.sign(tokenData, process.env.JWT_SECRET_TOKEN!, {
-      expiresIn: "125d",
-    });
-
-    const res = NextResponse.json(
-      new ApiResponse(202, "", "User details updated Successfully"),
-      {
-        status: 202,
-      }
+  //create token data
+  const tokenData = {
+    id: updatedUser.id,
+    images: updatedUser.images,
+    isAdmin: updatedUser.isAdmin,
+  };
+  const verifiedToken: any = Tokentype.safeParse(tokenData);
+  if (!verifiedToken.success) {
+    return NextResponse.json(
+      new ApiError(425, verifiedToken.error?.errors[0] || "Invalid token type"),
+      { status: 425 }
     );
+  }
+  const token = jwt.sign(verifiedToken.data, process.env.JWT_SECRET_TOKEN!, {
+    expiresIn: "125d",
+  });
 
-    res.cookies.set("token", token, {
-      httpOnly: true,
-    });
-    return res;
+  const res = NextResponse.json(
+    new ApiResponse(202, updatedUser, "User details updated Successfully"),
+    {
+      status: 202,
+    }
+  );
 
-  
+  res.cookies.set("token", token, {
+    httpOnly: true,
+  });
+  return res;
 }
 
 export async function DELETE(req: NextRequest, { params }: Props) {

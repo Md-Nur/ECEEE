@@ -6,7 +6,7 @@ import ApiError from "../../utils/ApiError";
 export async function GET(req: NextRequest) {
   const data = req.cookies.get("token")?.value || "";
   if (!data) {
-    return NextResponse.json(new ApiError(420), { status: 420 });
+    return NextResponse.json(new ApiError(404), { status: 420 });
   }
   let decodedData: any;
   try {
