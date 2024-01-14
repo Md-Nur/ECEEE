@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useUserAuth } from "../context/userContext";
+import { useUserAuth } from "../../context/userContext";
 import Member, { User } from "@/components/Member";
 
-const UserList = () => {
+const Unverified = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
@@ -22,12 +22,12 @@ const UserList = () => {
 
   return (
     <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-12">
-      <h1 className="text-center text-4xl font-bold mb-5">Members</h1>
-      {users.map(
-        (user) => !user?.isAdmin && user?.isVerified && <Member {...user} />
-      )}
+      <h1 className="text-center text-4xl font-bold mb-5">
+        Unverified Members
+      </h1>
+      {users.map((user) => !user?.isVerified && <Member {...user} />)}
     </main>
   );
 };
 
-export default UserList;
+export default Unverified;

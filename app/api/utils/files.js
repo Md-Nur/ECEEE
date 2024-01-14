@@ -25,7 +25,7 @@ import ApiError from "./ApiError";
 // };
 
 // add files
-const fileUplaoding = async (file, folder) => {
+export const fileToUrl = async (file, folder) => {
   const extention = file.name.split(".").pop();
 
   if (!extention || !["jpg", "jpeg", "png"].includes(extention)) {
@@ -46,15 +46,15 @@ const fileUplaoding = async (file, folder) => {
   }
 };
 
-export const fileToUrl = async (file, folder) => {
-  let imageUrl = await fileUplaoding(file, folder);
-  return imageUrl;
-};
+// export const fileToUrl = async (file, folder) => {
+//   let imageUrl = await fileUplaoding(file, folder);
+//   return imageUrl;
+// };
 export const filesToUrls = async (files, folder) => {
   let imageUrl = [];
 
   for (const file of files) {
-    imageUrl.push(await fileUplaoding(file, folder));
+    imageUrl.push(await fileToUrl(file, folder));
   }
 
   return imageUrl;
@@ -82,9 +82,10 @@ export const deleteFiles = async (images, folder) => {
     imagesUrl.push(`ECEEE/${folder}/${fileName}`);
   }
   try {
+    console.log(imagesUrl);
     await deleteOnCloudinary(imagesUrl); // deleting the previous files
   } catch (e) {
     // throw Error(e);
-    throw new ApiError(404, `There have no file named: ${images}`, e);
+    return new ApiError(404, `There have no file named: ${images}`, e);
   }
 };

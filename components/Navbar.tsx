@@ -8,11 +8,6 @@ import { useUserAuth } from "@/app/context/userContext";
 
 const Navbar = () => {
   const { userAuth } = useUserAuth();
-  // const [avatar, setAvatar] = useState();
-
-  // useEffect(() => {
-  //   setAvatar(userAuth?.images);
-  // }, [userAuth]);
 
   return (
     <nav
@@ -54,6 +49,11 @@ const Navbar = () => {
             <li>
               <Link href="/executive-committee">Executive Committee</Link>
             </li>
+            {userAuth.isAdmin && (
+              <li>
+                <Link href="/admin/unverified-members">Unverified Members</Link>
+              </li>
+            )}
             <li>
               <Link href="/activities">Activites</Link>
             </li>
@@ -77,6 +77,11 @@ const Navbar = () => {
           <li>
             <Link href="/executive-committee">Executive Committee</Link>
           </li>
+          {userAuth.isAdmin && (
+            <li>
+              <Link href="/admin/unverified-members">Unverified Members</Link>
+            </li>
+          )}
           <li>
             <Link href="/activities">Activites</Link>
           </li>
@@ -119,22 +124,25 @@ const Navbar = () => {
               </li>
             )}
 
-            <li>
-              {userAuth.id !== 0 ? (
+            {userAuth.id !== 0 ? (
+              <li>
                 <LogoutButton />
-              ) : (
-                <Link href="/user/login">Login</Link>
-              )}
-            </li>
-            {userAuth?.isAdmin && (
+              </li>
+            ) : (
               <>
                 <li>
-                  <Link href="/admin">Admin</Link>
+                  <Link href="/user/login">Login</Link>
                 </li>
+
                 <li>
-                  <Link href="/admin/signin">Register</Link>
+                  <Link href="/user/signin">Register</Link>
                 </li>
               </>
+            )}
+            {userAuth?.isAdmin && (
+              <li>
+                <Link href="/admin">Admin</Link>
+              </li>
             )}
           </ul>
         </div>

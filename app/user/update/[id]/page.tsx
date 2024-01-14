@@ -1,7 +1,7 @@
 "use client";
 import Forms from "@/components/Form";
 import { useEffect, useState } from "react";
-import { User } from "@/app/user/profile/[id]/page";
+import { User } from "@/components/Member";
 import { useUserAuth } from "@/app/context/userContext";
 import { useRouter } from "next/navigation";
 
@@ -54,7 +54,7 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
       />
       <input
         type="text"
-        className="textarea textarea-bordered w-full"
+        className="input input-bordered w-full"
         name="phone"
         placeholder="Phone Number"
         value={user?.phone}
@@ -62,7 +62,7 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
       />
       <input
         type="password"
-        className="textarea textarea-bordered w-full"
+        className="input input-bordered w-full"
         name="password"
         placeholder="Password (If you don't want to change password then remain this field blank"
       />

@@ -2,17 +2,6 @@
 import { useState } from "react";
 import Forms from "@/components/Form";
 
-function passwordGenerator() {
-  const allChar =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-  let pass = "";
-  for (let i = 0; i < 5; i++) {
-    let oneChar = allChar[Math.floor(Math.random() * allChar.length)];
-    pass += oneChar;
-  }
-  return pass;
-}
-
 const Singin = () => {
   const Props: any = {
     headingName: "Signin User",
@@ -20,21 +9,62 @@ const Singin = () => {
     apiUrl: `/api/users/signin`,
     submitName: "Signin",
   };
-  const [password, setPassword] = useState(passwordGenerator());
   return (
     <Forms {...Props}>
       <input
         type="text"
-        placeholder="Full Name"
+        placeholder="Name"
         name="fullname"
         className="input input-bordered w-full"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Roll No"
+        name="rollNo"
+        className="input input-bordered w-full"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Session"
+        name="session"
+        className="input input-bordered w-full"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Year"
+        name="year"
+        className="input input-bordered w-full"
+        required
       />
 
+      <input
+        type="tel"
+        placeholder="Phone Number"
+        required
+        name="phone"
+        className="input input-bordered w-full"
+      />
       <input
         type="email"
         placeholder="Email"
         name="email"
         className="input input-bordered w-full"
+      />
+      <input
+        type="text"
+        placeholder="Interests"
+        name="interests"
+        className="input input-bordered w-full"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        name="password"
+        className="input input-bordered w-full"
+        required
       />
       <label
         htmlFor="img"
@@ -47,25 +77,8 @@ const Singin = () => {
           className="file-input w-full mx-5 rounded max-h-10 file-input-success"
           accept="image/png, image/jpeg"
           id="img"
-          // multiple
         />
       </label>
-      <input
-        type="tel"
-        placeholder="Phone Number"
-        required
-        name="phone"
-        className="input input-bordered w-full"
-      />
-      <input
-        type="text"
-        placeholder="Password"
-        name="password"
-        className="input input-bordered w-full"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
     </Forms>
   );
 };

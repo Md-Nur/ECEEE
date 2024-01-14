@@ -3,17 +3,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import DeleteButton from "@/components/admin/DeleteButton";
-import AdminBtn from "@/components/admin/AdminBtn";
 import { useUserAuth } from "@/app/context/userContext";
-
-export interface User {
-  id: number;
-  fullname: string;
-  email: string;
-  phone: string;
-  image: string;
-  isAdmin: boolean;
-}
+import { User } from "@/components/Member";
 
 const Profile = ({ params }: { params: { id: string } }) => {
   const { userAuth } = useUserAuth();
@@ -52,8 +43,12 @@ const Profile = ({ params }: { params: { id: string } }) => {
         />
         <div>
           <h1 className="text-xl sm:text-5xl font-bold">{user.fullname}</h1>
-          <p className="pt-6">Phone: {user.phone}</p>
-          <p className="pb-6">Email: {user.email}</p>
+          <p className="ml-3 mt-6">Roll No: {user?.rollNo}</p>
+          <p className="ml-3 my-3">Session: {user?.session}</p>
+          <p className="ml-3 my-3">Year: {user?.year}</p>
+          <p className="ml-3 my-3">Phone: {user.phone}</p>
+          <p className="ml-3 my-3">Email: {user.email}</p>
+          <p className="ml-3 mb-6">Interest In: {user?.interests}</p>
           <div className="flex flex-wrap items-center justify-around gap-2">
             {userAuth?.id === user.id && (
               <Link href={`/user/update/${user.id}`} className="btn btn-info">
@@ -63,11 +58,17 @@ const Profile = ({ params }: { params: { id: string } }) => {
             {userAuth?.isAdmin === true ? (
               <>
                 <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
-                <AdminBtn
+                {/* <AdminBtn
                   apiUrl={`/api/${
                     user.isAdmin ? "remove-admin" : "make-admin"
                   }/${user.id || params.id}`}
-                />
+                /> */}
+                <Link
+                  href={`/admin/update-admin/${params?.id || user?.id}`}
+                  className="btn btn-warning"
+                >
+                  Update Admin
+                </Link>
               </>
             ) : (
               <></>

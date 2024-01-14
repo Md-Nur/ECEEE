@@ -99,7 +99,10 @@ export async function PUT(req: NextRequest, { params }: Props) {
       data: validatedData.data,
     });
   } catch (e: any) {
-    throw new ApiError(404, e.message || "User data did not update");
+    return NextResponse.json(
+      new ApiError(404, e.message || "User data did not update"),
+      { status: 404 }
+    );
   }
 
   //create token data
@@ -141,7 +144,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 
   let image: string = prevData?.images!;
   try {
-    await deleteFiles(image, "user");
+    await deleteFiles(image, "users");
   } catch (error: any) {
     return NextResponse.json(
       new ApiError(420, error.message || "Can't delete images")
