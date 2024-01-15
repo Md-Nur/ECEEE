@@ -38,30 +38,24 @@ export const UserAuthProvider = ({ children }: { children: ReactNode }) => {
     fetch("/api/users/me")
       .then((res) => res.json())
       .then((jData) => {
-        if (jData.statusCode < 400) setUserAuth(jData.data);
+        if (jData.success) setUserAuth(jData.data);
       })
       .then(() => {
         if (userAuth.id > 0) {
           fetch(`/api/users/${userAuth.id}`)
             .then((res) => res.json())
             .then((jdata) => {
-              if (jdata.statusCode >= 400) {
+              if (jdata.success) {
                 setUserAuth({
                   id: 0,
                   images: "",
                   isAdmin: false,
                 });
-              } else {
-                setUserAuth({
-                  id: jdata.data.id,
-                  images: jdata.data.images,
-                  isAdmin: jdata.data.isAdmin,
-                });
               }
             });
         }
       });
-  }, [userAuth.id]);
+  }, []);
   return (
     <UserContext.Provider value={{ userAuth, setUserAuth }}>
       {children}

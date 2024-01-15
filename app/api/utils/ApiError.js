@@ -10,6 +10,8 @@ class ApiError extends Error {
     this.message = message;
     this.errors = message;
     this.data = null;
+    this.success = statusCode < 400;
+
     // if (stack) {
     //   this.stack = stack;
     // } else {

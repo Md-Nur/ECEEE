@@ -5,29 +5,34 @@ import ApiResponse from "../../utils/ApiResponse.js";
 import { NextRequest, NextResponse } from "next/server";
 import { fileToUrl } from "../../utils/files.js";
 import { userSchema } from "../route";
+
 export async function POST(req: NextRequest) {
   try {
-    const reqBody = await req.formData();
-    const file: any = reqBody.get("images");
+    const data = await req.formData();
+    const file: any = data.get("images");
 
-    let images: string = "";
+    let image: string = "";
     if (file.size > 1)
       try {
-        images = await fileToUrl(file, "users");
+        image = await fileToUrl(file, "users");
       } catch (error: any) {
         return NextResponse.json(
           new ApiError(420, error.message || "Upload avatar failed")
         );
       }
-    const data = {
-      fullname: reqBody.get("fullname"),
-      email: reqBody.get("email"),
-      phone: reqBody.get("phone"),
-      images: images,
-      password: reqBody.get("password"),
+    let body: any = {
+      fullname: data.get("fullname"),
+      rollNo: data.get("rollNo"),
+      session: data.get("session"),
+      year: data.get("year"),
+      phone: data.get("phone"),
+      email: data.get("email") || "",
+      interests: data.get("interests"),
+      password: data.get("password") || "",
+      images: image,
     };
 
-    if (!data.phone || !data.password)
+    if (!body.phone || !body.password)
       return NextResponse.json(
         new ApiError(404, "Phone number and password is required"),
         { status: 404 }
@@ -67,8 +72,12 @@ export async function POST(req: NextRequest) {
         201,
         {
           fullname: newUser.fullname,
+          rollNo: newUser.rollNo,
+          session: newUser.session,
+          year: newUser.year,
           phone: newUser.phone,
           email: newUser.email,
+          interests: newUser.interests,
           images: newUser.images,
         },
         "User created successfully"

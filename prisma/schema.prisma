@@ -24,7 +24,7 @@ model User {
   isVerified         Boolean  @default(false)
   isAdmin            Boolean  @default(false)
   membershipFee      Int      @default(0)
-  membershipValidity DateTime @default(now())
+  membershipValidity String   @default("")
   membershipType     String   @default("")
   memberId           Int      @default(0)
   createdAt          DateTime @default(now())

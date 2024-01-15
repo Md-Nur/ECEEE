@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useUserAuth } from "../../context/userContext";
 import Member, { User } from "@/components/Member";
+import toast from "react-hot-toast";
 
 const Unverified = () => {
   const { userAuth } = useUserAuth();
@@ -9,7 +10,11 @@ const Unverified = () => {
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
-      .then((jData) => jData.reverse())
+      .then((jData) => {
+        if (jData.success) return jData.data;
+        else toast.error(jData.errors);
+      })
+      .then((data) => data.reverse())
       .then((data) => setUsers(data));
   }, [userAuth]);
 

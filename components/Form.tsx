@@ -45,13 +45,21 @@ const Forms: React.FC<Props> = ({
         toast.dismiss();
 
         // Router Section
-        if (apiUrl.split("/")[2] === "users" && method === "PUT") {
+        if (apiUrl.split("/")[4] === "update-admin") {
+          if (userAuth.id === resData?.id) {
+            setUserAuth({
+              id: resData?.id,
+              images: resData?.images,
+              isAdmin: resData?.isAdmin,
+            });
+          }
+          router.push(`/admin/unverified-members`);
+        } else if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           setUserAuth({
             id: resData?.id,
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
-          
           router.push(`/user/profile/${resData.id || ""}`);
         } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
@@ -61,7 +69,6 @@ const Forms: React.FC<Props> = ({
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
-          
           router.push(`/user/profile/${resData.id}`);
         } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
           router.push("/admin");
@@ -69,11 +76,13 @@ const Forms: React.FC<Props> = ({
         toast.success(jsonData.message);
       } else {
         toast.dismiss();
-        toast.error(await jsonData.errors);
+        toast.error(
+          `Status code: ${jsonData.statusCode} message: ${jsonData.errors}`
+        );
       }
     } catch (error: any) {
       toast.dismiss();
-      toast.error(error?.message);
+      toast.error(error.message);
     }
 
     ref.current?.reset();

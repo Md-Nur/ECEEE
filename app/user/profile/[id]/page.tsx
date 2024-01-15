@@ -52,26 +52,19 @@ const Profile = ({ params }: { params: { id: string } }) => {
           <div className="flex flex-wrap items-center justify-around gap-2">
             {userAuth?.id === user.id && (
               <Link href={`/user/update/${user.id}`} className="btn btn-info">
-                Update
+                Update User Info
               </Link>
             )}
-            {userAuth?.isAdmin === true ? (
+            {userAuth?.isAdmin && (
               <>
                 <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
-                {/* <AdminBtn
-                  apiUrl={`/api/${
-                    user.isAdmin ? "remove-admin" : "make-admin"
-                  }/${user.id || params.id}`}
-                /> */}
                 <Link
                   href={`/admin/update-admin/${params?.id || user?.id}`}
                   className="btn btn-warning"
                 >
-                  Update Admin
+                  Update Admin Info
                 </Link>
               </>
-            ) : (
-              <></>
             )}
           </div>
         </div>

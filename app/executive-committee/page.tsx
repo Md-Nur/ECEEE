@@ -2,17 +2,21 @@
 import { useEffect, useState } from "react";
 import { useUserAuth } from "../context/userContext";
 import Member, { User } from "@/components/Member";
+import toast from "react-hot-toast";
 
 const Admin = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("api/users")
+    fetch("/api/users")
       .then((res) => res.json())
-      .then((jData) => jData.reverse())
+      .then((jData) => {
+        if (jData.success) return jData.data;
+        else toast.error(jData.errors);
+      })
+      .then((data) => data.reverse())
       .then((data) => setUsers(data));
   }, [userAuth]);
-
   if (!users)
     return (
       <div className="h-screen flex items-center justify-center">

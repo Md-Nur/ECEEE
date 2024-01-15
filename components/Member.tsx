@@ -48,9 +48,7 @@ const Member = ({ ...user }: User) => {
         </div>
       </div>
       <div className="collapse-content text-xs sm:text-base">
-        {user?.rollNo && user?.rollNo !== 0 && (
-          <p className="mx-3">Roll No: {user?.rollNo}</p>
-        )}
+        {user?.rollNo !== 0 && <p className="mx-3">Roll No: {user?.rollNo}</p>}
         <div className="m-2">
           <Link
             href={`/user/profile/${user.id}`}
@@ -64,6 +62,14 @@ const Member = ({ ...user }: User) => {
               className="btn btn-info mx-1"
             >
               Update Profile
+            </Link>
+          )}
+          {userAuth?.isAdmin && (
+            <Link
+              href={`/admin/update-admin/${user?.id}`}
+              className="btn btn-warning"
+            >
+              Update Admin Info
             </Link>
           )}
         </div>

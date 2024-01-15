@@ -5,11 +5,16 @@ import ApiResponse from "../utils/ApiResponse";
 import { z } from "zod";
 
 export const userSchema = z.object({
+  id: z.number(),
   fullname: z.string(),
+  rollNo: z.number(),
+  session: z.string(),
+  year: z.number(),
   phone: z.string(),
   email: z.string(),
-  images: z.string(),
+  interests: z.string(),
   password: z.string(),
+  images: z.string(),
 });
 
 export async function GET(req: NextRequest) {
@@ -19,7 +24,7 @@ export async function GET(req: NextRequest) {
       status: 404,
     });
 
-  return NextResponse.json(data, {
+  return NextResponse.json(new ApiResponse(200, data), {
     status: 200,
   });
 }

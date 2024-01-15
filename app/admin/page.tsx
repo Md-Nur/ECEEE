@@ -6,9 +6,12 @@ const Admin = () => {
   return (
     <main className="mx-auto my-12">
       <div className="flex w-full pb-14">
-      <Link href="/admin/signin" className="btn btn-success mx-auto">
-        Register Memeber
-      </Link>
+        <Link
+          href="/admin/unverified-members"
+          className="btn btn-success mx-auto"
+        >
+          Unverified Memebers
+        </Link>
       </div>
       <AddEvent />
       <UpdateCarousel />

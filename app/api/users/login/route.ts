@@ -4,13 +4,7 @@ import ApiError from "../../utils/ApiError";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../../utils/ApiResponse";
 import bcryptjs from "bcryptjs";
-import { boolean, z } from "zod";
-
-export const Tokentype = z.object({
-  id: z.number(),
-  images: z.string(),
-  isAdmin: z.boolean(),
-});
+import generateToken from "@/app/api/utils/GenerateToken";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,7 +25,14 @@ export async function POST(req: NextRequest) {
           status: 400,
         }
       );
+    //create token data
+    const tokenData = {
+      id: user.id,
+      images: user.images,
+      isAdmin: user.isAdmin,
+    };
 
+    const token = generateToken(tokenData);
     // password checking
     const validPassword = await bcryptjs.compare(password, user.password);
     if (!validPassword)
@@ -39,26 +40,6 @@ export async function POST(req: NextRequest) {
         new ApiError(401, "Password did not matched with this phone number"),
         { status: 401 }
       );
-
-    //create token data
-    const tokenData = {
-      id: user.id,
-      images: user.images,
-      isAdmin: user.isAdmin,
-    };
-    const verifiedToken: any = Tokentype.safeParse(tokenData);
-    if (!verifiedToken.success) {
-      return NextResponse.json(
-        new ApiError(
-          425,
-          verifiedToken.error?.errors[0] || "Invalid token type"
-        ),
-        { status: 425 }
-      );
-    }
-    const token = jwt.sign(verifiedToken.data, process.env.JWT_SECRET_TOKEN!, {
-      expiresIn: "125d",
-    });
 
     const res = NextResponse.json(
       new ApiResponse(200, user, "Login Successfully"),

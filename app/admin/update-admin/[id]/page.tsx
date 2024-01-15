@@ -14,14 +14,14 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
   const Props: any = {
     headingName: "Update Admin",
     method: "PUT",
-    apiUrl: `/api/update-admin`,
+    apiUrl: `/api/users/${params.id}/update-admin`,
     submitName: "Update",
   };
   const [user, setUser] = useState<User>();
   const [error, setError] = useState<any>();
 
   useEffect(() => {
-    fetch(`/api/users/${params.id}`)
+    fetch(`/api/users/${params.id}/`)
       .then((res) => res.json())
       .then((jdata) => {
         if (jdata.statusCode >= 400) setError(jdata);
@@ -38,7 +38,7 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
   if (!user)
     return (
       <div className="h-screen flex justify-center items-center">
-        <span className=" loading loading-infinity loading-lg"></span>
+        <span className="loading loading-infinity loading-lg"></span>
       </div>
     );
   return (

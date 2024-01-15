@@ -6,7 +6,7 @@ import { deleteFiles, fileToUrl } from "../../utils/files";
 import { userSchema } from "../route";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Tokentype } from "../login/route";
+import generateToken from "../../utils/GenerateToken";
 
 interface Props {
   params: { id: string };
@@ -28,7 +28,26 @@ export async function GET(req: NextRequest, { params }: Props) {
       status: 404,
     });
 
-  return NextResponse.json(new ApiResponse(200, user), { status: 200 });
+  return NextResponse.json(
+    new ApiResponse(200, {
+      id: user.id,
+      fullname: user.fullname,
+      rollNo: user.rollNo,
+      session: user.session,
+      year: user.year,
+      phone: user.phone,
+      email: user.email,
+      interests: user.interests,
+      images: user.images,
+      isVerified: user.isVerified,
+      isAdmin: user.isAdmin,
+      membershipFee: user.membershipFee,
+      membershipValidity: user.membershipValidity,
+      membershipType: user.membershipType,
+      memberId: user.memberId,
+    }),
+    { status: 200 }
+  );
 }
 
 export async function PUT(req: NextRequest, { params }: Props) {
@@ -66,10 +85,14 @@ export async function PUT(req: NextRequest, { params }: Props) {
   }
   let body: any = {
     fullname: data.get("fullname"),
+    rollNo: data.get("rollNo"),
+    session: data.get("session"),
+    year: data.get("year"),
     phone: data.get("phone"),
-    images: image,
     email: data.get("email") || "",
+    interests: data.get("interests"),
     password: data.get("password") || "",
+    images: image,
   };
 
   const validatedData: any = userSchema.safeParse(body);
@@ -111,19 +134,24 @@ export async function PUT(req: NextRequest, { params }: Props) {
     images: updatedUser.images,
     isAdmin: updatedUser.isAdmin,
   };
-  const verifiedToken: any = Tokentype.safeParse(tokenData);
-  if (!verifiedToken.success) {
-    return NextResponse.json(
-      new ApiError(425, verifiedToken.error?.errors[0] || "Invalid token type"),
-      { status: 425 }
-    );
-  }
-  const token = jwt.sign(verifiedToken.data, process.env.JWT_SECRET_TOKEN!, {
-    expiresIn: "125d",
-  });
+
+  const token = generateToken(tokenData);
 
   const res = NextResponse.json(
-    new ApiResponse(202, updatedUser, "User details updated Successfully"),
+    new ApiResponse(
+      202,
+      {
+        fullname: updatedUser.fullname,
+        rollNo: updatedUser.rollNo,
+        session: updatedUser.session,
+        year: updatedUser.year,
+        phone: updatedUser.phone,
+        email: updatedUser.email,
+        interests: updatedUser.interests,
+        images: updatedUser.images,
+      },
+      "User details updated Successfully"
+    ),
     {
       status: 202,
     }
@@ -151,11 +179,11 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     );
   } // deleting the previous files
 
-  const product = await prisma.user.delete({
+  const user = await prisma.user.delete({
     where: { id: Number(params.id) },
   });
 
-  if (!product || !prevData) {
+  if (!user || !prevData) {
     return NextResponse.json(new ApiError(400, "User can't be deleted"), {
       status: 400,
     });
