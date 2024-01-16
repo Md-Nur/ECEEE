@@ -21,26 +21,7 @@ export async function PUT(
 ) {
   try {
     const data = await req.formData();
-    let res = NextResponse.json(
-      new ApiResponse(200, "", "Update Admin details successfull"),
-      { status: 200 }
-    );
-
-    // Clear token if the admin edit his own data
-    const ownData = req.cookies.get("token")?.value || "";
-    if (!ownData)
-      return NextResponse.json(
-        new ApiError(450, "Only Admin can perform this operation"),
-        { status: 450 }
-      );
-    const decodedData: any = jwt.verify(ownData, process.env.JWT_SECRET_TOKEN!);
-
-    if (Number(params.id) === decodedData?.id) {
-      res.cookies.set("token", "", {
-        httpOnly: true,
-      });
-    }
-
+    
     let body: any = {
       isVerified: data.get("isVerified") === "Verified",
       isAdmin: data.get("isAdmin") === "Admin",
@@ -49,6 +30,7 @@ export async function PUT(
       membershipType: data.get("membershipType") || "",
       memberId: Number(data.get("memberId") || 0),
     };
+
     const validatedData: any = adminSchema.safeParse(body);
     if (!validatedData.success) {
       return NextResponse.json(
@@ -67,7 +49,19 @@ export async function PUT(
       data: validatedData.data,
     });
 
-    // Add token if the admin edit his own data
+    // update token if the admin edit his own data
+    const ownData = req.cookies.get("token")?.value || "";
+    if (!ownData)
+      return NextResponse.json(
+        new ApiError(450, "Only Admin can perform this operation"),
+        { status: 450 }
+      );
+    const decodedData: any = jwt.verify(ownData, process.env.JWT_SECRET_TOKEN!);
+
+    let res = NextResponse.json(
+      new ApiResponse(200, updatedData, "Update Admin details successfull"),
+      { status: 200 }
+    );
     if (decodedData.id === Number(params.id)) {
       generateToken({
         id: updatedData.id,
