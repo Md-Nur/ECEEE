@@ -85,7 +85,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
   }
   let body: any = {
     fullname: data.get("fullname"),
-    rollNo: Number(data.get("rollNo") || 0),
+    rollNo: data.get("rollNo") || "",
     session: data.get("session"),
     year: Number(data.get("year") || 0),
     phone: data.get("phone"),

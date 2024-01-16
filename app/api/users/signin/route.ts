@@ -22,12 +22,12 @@ export async function POST(req: NextRequest) {
       }
     let body: any = {
       fullname: data.get("fullname"),
-      rollNo: data.get("rollNo"),
+      rollNo: data.get("rollNo") ||"",
       session: data.get("session"),
-      year: data.get("year"),
+      year: Number(data.get("year") || 0),
       phone: data.get("phone"),
       email: data.get("email") || "",
-      interests: data.get("interests"),
+      interests: data.get("interests") || "",
       password: data.get("password") || "",
       images: image,
     };
@@ -37,9 +37,14 @@ export async function POST(req: NextRequest) {
         new ApiError(404, "Phone number and password is required"),
         { status: 404 }
       );
-    const validatedData = userSchema.safeParse(data);
+    const validatedData: any = userSchema.safeParse(body);
     if (!validatedData.success) {
-      return NextResponse.json(validatedData.error.errors, { status: 400 });
+      return NextResponse.json(
+        new ApiError(400, validatedData.error.errors[0].message),
+        {
+          status: 400,
+        }
+      );
     }
     const user = await prisma.user.findFirst({
       where: {

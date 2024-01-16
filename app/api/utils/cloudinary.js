@@ -16,7 +16,7 @@ const uploadOnCloudinary = async (bufferFile, folderName) => {
         { resource_type: "auto", folder: `ECEEE/${folderName}` },
         (error, result) => {
           if (error) {
-            console.error("Upload error: ", error);
+            // console.error("Upload error: ", error);
             reject(error);
           } else {
             // console.log("Upload result: ", result.url);

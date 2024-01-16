@@ -39,10 +39,9 @@ export const fileToUrl = async (file, folder) => {
   try {
     // upload on cloudinary
     let path = await uploadOnCloudinay(buffer, folder);
-
     return path;
   } catch (e) {
-    throw new ApiError(450, e);
+    throw new ApiError(450, e.message);
   }
 };
 

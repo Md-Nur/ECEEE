@@ -1,10 +1,9 @@
 "use client";
-import { useState } from "react";
 import Forms from "@/components/Form";
 
 const Singin = () => {
   const Props: any = {
-    headingName: "Signin User",
+    headingName: "Register User",
     method: "POST",
     apiUrl: `/api/users/signin`,
     submitName: "Signin",

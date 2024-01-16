@@ -61,7 +61,7 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
           id="isVerified"
           className="select select-bordered w-full max-w-sm"
         >
-          <option selected>
+          <option selected >
             {user.isVerified ? "Verified" : "Not Verified"}
           </option>
           <option>{user.isVerified ? "Not Verified" : "Verified"}</option>
