@@ -30,7 +30,7 @@ const Unverified = () => {
       <h1 className="text-center text-4xl font-bold mb-5">
         Unverified Members
       </h1>
-      {users.map((user) => !user?.isVerified && <Member {...user} />)}
+      {users.map((user) => !user?.isVerified && <Member key={user.id} {...user} />)}
     </main>
   );
 };

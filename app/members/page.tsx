@@ -29,7 +29,7 @@ const UserList = () => {
     <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-12">
       <h1 className="text-center text-4xl font-bold mb-5">Members</h1>
       {users.map(
-        (user) => !user?.isAdmin && user?.isVerified && <Member {...user} />
+        (user) => !user?.isAdmin && user?.isVerified && <Member key={user.id} {...user} />
       )}
     </main>
   );

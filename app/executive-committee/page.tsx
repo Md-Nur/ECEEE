@@ -30,7 +30,7 @@ const Admin = () => {
         Executive Committee
       </h1>
       {users.map(
-        (user) => user?.isAdmin && user?.isVerified && <Member {...user} />
+        (user) => user?.isAdmin && user?.isVerified && <Member key={user.id} {...user} />
       )}
     </main>
   );
