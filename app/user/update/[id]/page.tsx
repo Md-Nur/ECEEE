@@ -53,12 +53,52 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
         onChange={(e) => setUser({ ...user, fullname: e.target.value })}
       />
       <input
+        type="number"
+        placeholder="Roll No"
+        name="rollNo"
+        className="input input-bordered w-full"
+        value={user?.rollNo}
+        onChange={(e) => setUser({ ...user, rollNo: Number(e.target.value) })}
+      />
+      <input
         type="text"
+        placeholder="Session"
+        name="session"
+        className="input input-bordered w-full"
+        value={user?.session}
+        onChange={(e) => setUser({ ...user, session: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Year"
+        name="year"
+        className="input input-bordered w-full"
+        value={user?.year}
+        onChange={(e) => setUser({ ...user, year: Number(e.target.value) })}
+      />
+      <input
+        type="tel"
         className="input input-bordered w-full"
         name="phone"
         placeholder="Phone Number"
         value={user?.phone}
         onChange={(e) => setUser({ ...user, phone: e.target.value })}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        name="email"
+        className="input input-bordered w-full"
+        value={user?.email}
+        onChange={(e) => setUser({ ...user, email: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Interests"
+        name="interests"
+        className="input input-bordered w-full"
+        value={user?.interests}
+        onChange={(e) => setUser({ ...user, interests: e.target.value })}
       />
       <input
         type="password"
@@ -83,14 +123,7 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
           id="img"
         />
       </label>
-      <input
-        type="email"
-        placeholder="Email"
-        name="email"
-        className="input input-bordered w-full"
-        value={user?.email}
-        onChange={(e) => setUser({ ...user, email: e.target.value })}
-      />
+      
     </Forms>
   );
 };

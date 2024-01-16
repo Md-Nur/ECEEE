@@ -85,9 +85,9 @@ export async function PUT(req: NextRequest, { params }: Props) {
   }
   let body: any = {
     fullname: data.get("fullname"),
-    rollNo: data.get("rollNo"),
+    rollNo: Number(data.get("rollNo") || 0),
     session: data.get("session"),
-    year: data.get("year"),
+    year: Number(data.get("year") || 0),
     phone: data.get("phone"),
     email: data.get("email") || "",
     interests: data.get("interests"),
@@ -98,7 +98,10 @@ export async function PUT(req: NextRequest, { params }: Props) {
   const validatedData: any = userSchema.safeParse(body);
   if (!validatedData.success) {
     return NextResponse.json(
-      new ApiError(400, validatedData.error.errors[0] || "Invalid Input"),
+      new ApiError(
+        400,
+        validatedData.error.errors[0].message || "Invalid Input"
+      ),
       {
         status: 400,
       }
@@ -138,20 +141,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
   const token = generateToken(tokenData);
 
   const res = NextResponse.json(
-    new ApiResponse(
-      202,
-      {
-        fullname: updatedUser.fullname,
-        rollNo: updatedUser.rollNo,
-        session: updatedUser.session,
-        year: updatedUser.year,
-        phone: updatedUser.phone,
-        email: updatedUser.email,
-        interests: updatedUser.interests,
-        images: updatedUser.images,
-      },
-      "User details updated Successfully"
-    ),
+    new ApiResponse(202, updatedUser, "User details updated Successfully"),
     {
       status: 202,
     }

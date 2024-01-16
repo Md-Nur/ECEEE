@@ -37,7 +37,7 @@ export async function PUT(
 
   if (files[0].size > 1) {
     try {
-      await deleteFiles(images,"events"); // deleting the previous files
+      await deleteFiles(images, "events"); // deleting the previous files
     } catch (e: any) {
       return NextResponse.json(
         new ApiError(
@@ -68,8 +68,9 @@ export async function PUT(
     return NextResponse.json(validatedData.error.errors, { status: 400 });
   }
 
+  let updatedEvent;
   try {
-    await prisma.event.update({
+    updatedEvent = await prisma.event.update({
       where: { id: Number(params.id) },
       data: validatedData.data,
     });
@@ -81,7 +82,7 @@ export async function PUT(
   }
 
   return NextResponse.json(
-    new ApiResponse(202, "", "Event details update successfully")
+    new ApiResponse(202, updatedEvent, "Event details update successfully")
   );
 }
 
@@ -97,7 +98,7 @@ export async function DELETE(
 
   let images: string[] = prevData?.images!;
   try {
-    await deleteFiles(images,"events");
+    await deleteFiles(images, "events");
   } catch (e: any) {
     return NextResponse.json(
       new ApiError(450, e.message || "Can't delete previous images"),

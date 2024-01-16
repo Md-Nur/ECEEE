@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse";
 import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.number(),
+  // id: z.number(),
   fullname: z.string(),
   rollNo: z.number(),
   session: z.string(),
