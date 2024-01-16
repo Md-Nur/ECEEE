@@ -54,7 +54,7 @@ const Member = ({ ...user }: User) => {
             href={`/user/profile/${user.id}`}
             className="btn btn-primary mx-1"
           >
-            Veiew Profile
+            View Profile
           </Link>
           {userAuth?.id === user.id && (
             <Link

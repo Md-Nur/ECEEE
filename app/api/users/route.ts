@@ -18,7 +18,11 @@ export const userSchema = z.object({
 });
 
 export async function GET(req: NextRequest) {
-  const data = await prisma.user.findMany();
+  const data = await prisma.user.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
   if (!data || data.length < 1)
     return NextResponse.json(new ApiError(404, "There have no user"), {
       status: 404,

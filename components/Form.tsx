@@ -63,7 +63,7 @@ const Forms: React.FC<Props> = ({
           router.push(`/user/profile/${resData.id || ""}`);
         } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
-        } else if (apiUrl === "/api/users/login") {
+        } else if (apiUrl === "/api/users/login" || "api/users/signin") {
           setUserAuth({
             id: resData?.id,
             images: resData?.images,

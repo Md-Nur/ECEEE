@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       }
     let body: any = {
       fullname: data.get("fullname"),
-      rollNo: data.get("rollNo") ||"",
+      rollNo: data.get("rollNo") || "",
       session: data.get("session"),
       year: Number(data.get("year") || 0),
       phone: data.get("phone"),
@@ -73,20 +73,7 @@ export async function POST(req: NextRequest) {
       });
 
     return NextResponse.json(
-      new ApiResponse(
-        201,
-        {
-          fullname: newUser.fullname,
-          rollNo: newUser.rollNo,
-          session: newUser.session,
-          year: newUser.year,
-          phone: newUser.phone,
-          email: newUser.email,
-          interests: newUser.interests,
-          images: newUser.images,
-        },
-        "User created successfully"
-      ),
+      new ApiResponse(201, newUser, "User created successfully"),
       { status: 201 }
     );
   } catch (e: any) {
