@@ -38,7 +38,7 @@ const Admin = () => {
       {/* Adding member type button */}
       <div className="flex w-full pt-14">
         {types.map((type) => (
-          <div className="flex w-auto m-2 p-2">
+          <div key={type.id} className="flex w-auto m-2 p-2">
             <span>{type.type}</span>
             <DeleteButton apiUrl={`/api/member-type?id=${type.id}`} />
           </div>
