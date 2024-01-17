@@ -2,9 +2,9 @@ import Carousel from "@/components/Carousel";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <Carousel />
-      <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-20 bg-neutral p-[3vw] rounded-lg">
+      <section className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-20 bg-neutral p-[3vw] rounded-lg">
         <h2 className="text-4xl font-bold text-center my-3">
           Mission and vission
         </h2>
@@ -16,7 +16,7 @@ export default function Home() {
           fugit blanditiis ab rem, totam itaque minima qui eveniet harum
           suscipit odit, laborum ut vitae illo?
         </p>
-      </main>
-    </>
+      </section>
+    </main>
   );
 }

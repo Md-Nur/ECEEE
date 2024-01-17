@@ -4,13 +4,6 @@ import Forms from "@/components/Form";
 import { useEffect, useState } from "react";
 
 const UpdateAdmin = ({ params }: { params: { id: string } }) => {
-  const membershipTypesOption = [
-    "Student Membership",
-    "Premium Membership",
-    "Alumni Membership",
-    "Faculty Membership",
-    "Honorary Membership",
-  ];
   const Props: any = {
     headingName: "Update Admin",
     method: "PUT",
@@ -18,6 +11,14 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
     submitName: "Update",
   };
   const [user, setUser] = useState<User>();
+  const [membershipTypesOption, setMembershipTypesOption] = useState<
+    { id: number; type: string }[]
+  >([
+    {
+      id: 0,
+      type: "",
+    },
+  ]);
   const [error, setError] = useState<any>();
 
   useEffect(() => {
@@ -26,6 +27,12 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
       .then((jdata) => {
         if (jdata.statusCode >= 400) setError(jdata);
         else setUser(jdata.data);
+      });
+
+    fetch("/api/member-types")
+      .then((res) => res.json())
+      .then((jdata) => {
+        jdata.success ? setMembershipTypesOption(jdata.data) : setError(jdata);
       });
   }, [params.id]);
   if (error)
@@ -61,7 +68,7 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
           id="isVerified"
           className="select select-bordered w-full max-w-sm"
         >
-          <option selected >
+          <option selected>
             {user.isVerified ? "Verified" : "Not Verified"}
           </option>
           <option>{user.isVerified ? "Not Verified" : "Verified"}</option>
@@ -126,10 +133,10 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
           className="select select-bordered w-full max-w-sm"
         >
           <option selected>{user.membershipType}</option>
-          {membershipTypesOption.map(
-            (type, index) =>
-              type !== user.membershipType && (
-                <option key={index}>{type}</option>
+          {membershipTypesOption!.map(
+            (type) =>
+              type.type !== user.membershipType && (
+                <option key={type.id}>{type.type}</option>
               )
           )}
         </select>

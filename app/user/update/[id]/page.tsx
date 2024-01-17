@@ -17,7 +17,8 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<any>(null);
   useEffect(() => {
-    if (userAuth.id !== Number(params.id)) router.push(`/user/profile/${userAuth.id}`);
+    if (userAuth.id !== Number(params.id))
+      router.push(`/user/profile/${userAuth.id}`);
     fetch(`/api/users/${params.id}`)
       .then((res) => res.json())
       .then((jdata) => {
@@ -68,14 +69,24 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
         value={user?.session}
         onChange={(e) => setUser({ ...user, session: e.target.value })}
       />
-      <input
-        type="number"
-        placeholder="Year"
-        name="year"
-        className="input input-bordered w-full"
-        value={user?.year}
-        onChange={(e) => setUser({ ...user, year: Number(e.target.value) })}
-      />
+      <label
+        htmlFor="year"
+        className="flex flex-wrap items-center justify-between w-full px-1 md:px-4 py-1 border rounded"
+      >
+        Year:
+        <select
+          name="year"
+          id="year"
+          className="select select-bordered w-full max-w-sm"
+        >
+          <option selected>{user.year}</option>
+          <option>1st Year</option>
+          <option>2nd Year</option>
+          <option>3rd Year</option>
+          <option>4th Year</option>
+          <option>MSc Engg</option>
+        </select>
+      </label>
       <input
         type="tel"
         className="input input-bordered w-full"
@@ -123,7 +134,6 @@ const UpdateUser = ({ params }: { params: { id: string } }) => {
           id="img"
         />
       </label>
-      
     </Forms>
   );
 };

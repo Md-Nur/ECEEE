@@ -15,7 +15,7 @@ model User {
   fullname           String
   rollNo             String   @default("")
   session            String   @default("")
-  year               Int      @default(0)
+  year               String   @default("")
   phone              String   @unique
   email              String
   interests          String   @default("")
@@ -48,4 +48,9 @@ model Carousel {
   image     String   @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MemberType {
+  id   Int    @id @default(autoincrement())
+  type String @default("")
 }

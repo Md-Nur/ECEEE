@@ -31,13 +31,23 @@ const Singin = () => {
         className="input input-bordered w-full"
         required
       />
-      <input
-        type="number"
-        placeholder="Year"
-        name="year"
-        className="input input-bordered w-full"
-        required
-      />
+      <label
+        htmlFor="year"
+        className="flex flex-wrap items-center justify-between w-full px-1 md:px-4 py-1 border rounded"
+      >
+        Year:
+        <select
+          name="year"
+          id="year"
+          className="select select-bordered w-full max-w-sm"
+        >
+          <option>1st Year</option>
+          <option>2nd Year</option>
+          <option>3rd Year</option>
+          <option>4th Year</option>
+          <option>MSc Engg</option>
+        </select>
+      </label>
 
       <input
         type="tel"

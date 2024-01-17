@@ -32,7 +32,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
       </div>
     );
   return (
-    <main className="hero py-16 bg-base-200">
+    <main className="hero py-16">
       <div className="hero-content flex-col lg:flex-row">
         <Image
           alt={user.fullname}
@@ -55,16 +55,16 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 Update User Info
               </Link>
             )}
+            {userAuth?.isAdmin && userAuth.id !== user.id && (
+              <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
+            )}
             {userAuth?.isAdmin && (
-              <>
-                <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
-                <Link
-                  href={`/admin/update-admin/${params?.id || user?.id}`}
-                  className="btn btn-warning"
-                >
-                  Update Admin Info
-                </Link>
-              </>
+              <Link
+                href={`/admin/update-admin/${params?.id || user?.id}`}
+                className="btn btn-warning"
+              >
+                Update Admin Info
+              </Link>
             )}
           </div>
         </div>

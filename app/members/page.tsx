@@ -8,7 +8,7 @@ const UserList = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users")
+    fetch("/api/users/verified-members", { cache: "no-store" })
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;
@@ -29,7 +29,9 @@ const UserList = () => {
     <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-12">
       <h1 className="text-center text-4xl font-bold mb-5">Members</h1>
       {users.map(
-        (user) => !user?.isAdmin && user?.isVerified && <Member key={user.id} {...user} />
+        (user) =>
+          !user?.isAdmin &&
+          user?.isVerified && <Member key={user.id} {...user} />
       )}
     </main>
   );

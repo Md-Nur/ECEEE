@@ -5,6 +5,7 @@ import ApiResponse from "../../utils/ApiResponse.js";
 import { NextRequest, NextResponse } from "next/server";
 import { fileToUrl } from "../../utils/files.js";
 import { userSchema } from "../route";
+import generateToken from "@/app/api/utils/GenerateToken.js";
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
       fullname: data.get("fullname"),
       rollNo: data.get("rollNo") || "",
       session: data.get("session"),
-      year: Number(data.get("year") || 0),
+      year: data.get("year") || "",
       phone: data.get("phone"),
       email: data.get("email") || "",
       interests: data.get("interests") || "",
@@ -37,10 +38,26 @@ export async function POST(req: NextRequest) {
         new ApiError(404, "Phone number and password is required"),
         { status: 404 }
       );
+    else if (body.rollNo.length !== 10) {
+      return NextResponse.json(
+        new ApiError(402, "Roll Number must have 10 digits"),
+        { status: 402 }
+      );
+    } else if (body.phone.length !== 11) {
+      return NextResponse.json(
+        new ApiError(402, "Phone number must be 11 digits"),
+        { status: 402 }
+      );
+    } else if (body.phone[0] !== "0" || body.phone[1] !== "1") {
+      return NextResponse.json(
+        new ApiError(402, "Phone number must be start with 01"),
+        { status: 402 }
+      );
+    }
     const validatedData: any = userSchema.safeParse(body);
     if (!validatedData.success) {
       return NextResponse.json(
-        new ApiError(400, validatedData.error.errors[0].message),
+        new ApiError(400, "Invalid type", validatedData.error),
         {
           status: 400,
         }
@@ -71,11 +88,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(new ApiError(400, "User did not created!"), {
         status: 400,
       });
-
-    return NextResponse.json(
+    //create token data
+    const tokenData = {
+      id: newUser.id,
+      images: newUser.images,
+      isAdmin: newUser.isAdmin,
+    };
+    const token = generateToken(tokenData);
+    // password checking
+    const res = NextResponse.json(
       new ApiResponse(201, newUser, "User created successfully"),
       { status: 201 }
     );
+    res.cookies.set("token", token, {
+      httpOnly: true,
+    });
+    return res;
   } catch (e: any) {
     return NextResponse.json(new ApiError(500, e.message), { status: 500 });
   }

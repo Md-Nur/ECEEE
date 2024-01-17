@@ -8,7 +8,7 @@ const Admin = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users")
+    fetch("/api/users/admin-members", { cache: "no-store" })
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;
@@ -30,7 +30,9 @@ const Admin = () => {
         Executive Committee
       </h1>
       {users.map(
-        (user) => user?.isAdmin && user?.isVerified && <Member key={user.id} {...user} />
+        (user) =>
+          user?.isAdmin &&
+          user?.isVerified && <Member key={user.id} {...user} />
       )}
     </main>
   );

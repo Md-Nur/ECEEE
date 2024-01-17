@@ -7,28 +7,23 @@ import { z } from "zod";
 export const userSchema = z.object({
   // id: z.number(),
   fullname: z.string(),
-  rollNo: z.string(),
+  rollNo: z.string().length(10),
   session: z.string(),
-  year: z.number(),
-  phone: z.string(),
+  year: z.string(),
+  phone: z.string().startsWith("01").length(11),
   email: z.string(),
   interests: z.string(),
-  password: z.string(),
+  password: z.string().min(4).max(16),
   images: z.string(),
 });
 
 export async function GET(req: NextRequest) {
-  const data = await prisma.user.findMany({
-    orderBy: {
-      id: "desc",
-    },
-  });
-  if (!data || data.length < 1)
-    return NextResponse.json(new ApiError(404, "There have no user"), {
-      status: 404,
+  try {
+    const data = await prisma.user.findMany();
+    return NextResponse.json(new ApiResponse(200, data), {
+      status: 200,
     });
-
-  return NextResponse.json(new ApiResponse(200, data), {
-    status: 200,
-  });
+  } catch (error: any) {
+    return NextResponse.json(new ApiError(404, error.message), { status: 404 });
+  }
 }

@@ -1,5 +1,5 @@
 "use client";
-
+import Sidebar from "@/components/Sidebar";
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "../context/userContext";
@@ -24,7 +24,16 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
         <span className="loading loading-infinity loading-lg"></span>
       </div>
     );
-  else if (admin) return <>{children}</>;
+  else if (admin)
+    return (
+      <main className="flex flex-col w-full lg:flex-row">
+        <div className="grid flex-grow card place-items-center">{children}</div>
+        <div className="divider lg:divider-horizontal"></div>
+        <aside className="grid flex-grow card place-items-center">
+          <Sidebar />
+        </aside>
+      </main>
+    );
   else {
     return (
       <h1 className="text-error text-center text-7xl py-52">

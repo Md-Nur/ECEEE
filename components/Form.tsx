@@ -76,9 +76,7 @@ const Forms: React.FC<Props> = ({
         toast.success(jsonData.message);
       } else {
         toast.dismiss();
-        toast.error(
-          `Status code: ${jsonData.statusCode} message: ${jsonData.errors}`
-        );
+        toast.error(jsonData.errors);
       }
     } catch (error: any) {
       toast.dismiss();
@@ -90,12 +88,12 @@ const Forms: React.FC<Props> = ({
   }
 
   return (
-    <section className="flex flex-col items-center justify-center p-2 sm:p-5 md:p-10">
+    <section className="flex flex-col items-center justify-around p-2 sm:p-3 my-10">
       <h2 className="text-3xl font-bold">{headingName}</h2>
       <form
         autoComplete="off"
         ref={ref}
-        className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-[80vw] gap-5 bg-neutral"
+        className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-[95vw] lg:w-[60vw] gap-5 bg-neutral"
         method={method}
         onSubmit={onSubmit}
       >

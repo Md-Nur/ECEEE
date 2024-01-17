@@ -8,7 +8,7 @@ const Unverified = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users")
+    fetch("/api/users/unverified-members", { cache: "no-store" })
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;
@@ -30,7 +30,9 @@ const Unverified = () => {
       <h1 className="text-center text-4xl font-bold mb-5">
         Unverified Members
       </h1>
-      {users.map((user) => !user?.isVerified && <Member key={user.id} {...user} />)}
+      {users.map(
+        (user) => !user?.isVerified && <Member key={user.id} {...user} />
+      )}
     </main>
   );
 };

@@ -94,6 +94,26 @@ export async function PUT(req: NextRequest, { params }: Props) {
     password: data.get("password") || "",
     images: image,
   };
+  if (!body.phone)
+    return NextResponse.json(new ApiError(404, "Phone number can't be blank"), {
+      status: 404,
+    });
+  else if (body.rollNo.length !== 10) {
+    return NextResponse.json(
+      new ApiError(402, "Roll Number must have 10 digits"),
+      { status: 402 }
+    );
+  } else if (body.phone.length !== 11) {
+    return NextResponse.json(
+      new ApiError(402, "Phone number must be 11 digits"),
+      { status: 402 }
+    );
+  } else if (body.phone[0] !== "0" || body.phone[1] !== "1") {
+    return NextResponse.json(
+      new ApiError(402, "Phone number must be start with 01"),
+      { status: 402 }
+    );
+  }
 
   const validatedData: any = userSchema.safeParse(body);
   if (!validatedData.success) {
