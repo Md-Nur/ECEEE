@@ -12,6 +12,29 @@ export async function POST(req: NextRequest) {
     const data = await req.formData();
     const file: any = data.get("images");
 
+    let user = await prisma.user.findFirst({
+      where: {
+        phone: String(data.get("phone") || ""),
+      },
+    });
+    if (user) {
+      return NextResponse.json(
+        new ApiError(400, "User already exist with this phone number"),
+        { status: 400 }
+      );
+    }
+    user = await prisma.user.findFirst({
+      where: {
+        rollNo: String(data.get("rollNo") || ""),
+      },
+    });
+    if (user) {
+      return NextResponse.json(
+        new ApiError(400, "User already exist with this Roll number"),
+        { status: 400 }
+      );
+    }
+
     let image: string = "";
     if (file.size > 1)
       try {
@@ -63,17 +86,7 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-    const user = await prisma.user.findFirst({
-      where: {
-        phone: validatedData.data?.phone,
-      },
-    });
-    if (user) {
-      return NextResponse.json(
-        new ApiError(400, "User already exist with this phone number"),
-        { status: 400 }
-      );
-    }
+
     const salt = await bcryptjs.genSalt(10);
     validatedData.data.password = await bcryptjs.hash(
       validatedData.data.password,

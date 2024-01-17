@@ -6,7 +6,7 @@ import LogoutButton from "./LogoutButton";
 const Sidebar = () => {
   const { userAuth } = useUserAuth();
   return (
-    <ul className="flex lg:flex-col gap-3">
+    <ul className="flex lg:flex-col gap-3 flex-wrap">
       <li>
         <Link className="link link-hover" href="/">
           Home

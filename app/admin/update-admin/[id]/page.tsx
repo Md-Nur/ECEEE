@@ -29,10 +29,12 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
         else setUser(jdata.data);
       });
 
-    fetch("/api/member-types")
+    fetch("/api/member-type")
       .then((res) => res.json())
       .then((jdata) => {
-        jdata.success ? setMembershipTypesOption(jdata.data) : setError(jdata);
+        jdata.success
+          ? setMembershipTypesOption(jdata.data)
+          : setError(jdata.errors);
       });
   }, [params.id]);
   if (error)

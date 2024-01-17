@@ -60,6 +60,33 @@ export async function PUT(req: NextRequest, { params }: Props) {
     },
   });
 
+  if (prevData?.phone !== String(data.get("phone") || "")) {
+    let user = await prisma.user.findFirst({
+      where: {
+        phone: String(data.get("phone") || ""),
+      },
+    });
+    if (user) {
+      return NextResponse.json(
+        new ApiError(400, "User already exist with this phone number"),
+        { status: 400 }
+      );
+    }
+  }
+  if (prevData?.rollNo !== String(data.get("rollNo") || "")) {
+    let user = await prisma.user.findFirst({
+      where: {
+        rollNo: String(data.get("rollNo") || ""),
+      },
+    });
+    if (user) {
+      return NextResponse.json(
+        new ApiError(400, "User already exist with this Roll number"),
+        { status: 400 }
+      );
+    }
+  }
+
   let image: string = prevData?.images!;
 
   if (file.size > 1) {
@@ -87,7 +114,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
     fullname: data.get("fullname"),
     rollNo: data.get("rollNo") || "",
     session: data.get("session"),
-    year: Number(data.get("year") || 0),
+    year: data.get("year") || "",
     phone: data.get("phone"),
     email: data.get("email") || "",
     interests: data.get("interests"),
@@ -120,7 +147,8 @@ export async function PUT(req: NextRequest, { params }: Props) {
     return NextResponse.json(
       new ApiError(
         400,
-        validatedData.error.errors[0].message || "Invalid Input"
+        validatedData.error.errors[0].message || "Invalid Input",
+        validatedData.error
       ),
       {
         status: 400,

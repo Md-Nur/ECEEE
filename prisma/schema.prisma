@@ -13,7 +13,7 @@ datasource db {
 model User {
   id                 Int      @id @default(autoincrement())
   fullname           String
-  rollNo             String   @default("")
+  rollNo             String   @unique
   session            String   @default("")
   year               String   @default("")
   phone              String   @unique

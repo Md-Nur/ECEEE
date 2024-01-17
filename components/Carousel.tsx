@@ -37,7 +37,7 @@ const Carousel = () => {
       .then((jdata) => {
         if (jdata?.statusCode < 400) setCarousel(jdata.data);
       });
-  }, [carousel]);
+  }, []);
   return (
     <Swiper
       modules={[Autoplay, Navigation, Pagination]}

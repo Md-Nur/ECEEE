@@ -13,7 +13,7 @@ export const userSchema = z.object({
   phone: z.string().startsWith("01").length(11),
   email: z.string(),
   interests: z.string(),
-  password: z.string().min(4).max(16),
+  password: z.string(),
   images: z.string(),
 });
 

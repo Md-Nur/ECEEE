@@ -55,7 +55,7 @@ export const UserAuthProvider = ({ children }: { children: ReactNode }) => {
             });
         }
       });
-  });
+  }, []);
   return (
     <UserContext.Provider value={{ userAuth, setUserAuth }}>
       {children}

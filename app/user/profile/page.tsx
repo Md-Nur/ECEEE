@@ -11,8 +11,8 @@ const Page = () => {
         if (jData.statusCode >= 400) router.push("/user/login");
         else router.push(`/user/profile/${jData.data.id}`);
       });
-  }, [router]);
-  
+  }, []);
+
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <span className="loading loading-infinity loading-lg"></span>

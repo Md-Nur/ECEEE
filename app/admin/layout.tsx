@@ -29,7 +29,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       <main className="flex flex-col w-full lg:flex-row">
         <div className="grid flex-grow card place-items-center">{children}</div>
         <div className="divider lg:divider-horizontal"></div>
-        <aside className="grid flex-grow card place-items-center">
+        <aside className="hidden lg:grid flex-grow card place-items-center">
           <Sidebar />
         </aside>
       </main>

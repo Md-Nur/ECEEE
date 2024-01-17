@@ -55,7 +55,7 @@ const Profile = ({ params }: { params: { id: string } }) => {
                 Update User Info
               </Link>
             )}
-            {userAuth?.isAdmin && userAuth.id !== user.id && (
+            {userAuth.isAdmin && !user?.isAdmin && userAuth.id !== user.id && (
               <DeleteButton apiUrl={`/api/users/${user.id || params.id}`} />
             )}
             {userAuth?.isAdmin && (

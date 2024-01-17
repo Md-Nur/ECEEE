@@ -40,11 +40,13 @@ const Forms: React.FC<Props> = ({
         body: formData,
       });
       const jsonData = await res.json();
-      if (res.ok && jsonData.statusCode < 400) {
+      if (res.ok && jsonData.success) {
         const resData = await jsonData?.data;
         toast.dismiss();
 
         // Router Section
+
+        //Update Admin Section
         if (apiUrl.split("/")[4] === "update-admin") {
           if (userAuth.id === resData?.id) {
             setUserAuth({
@@ -54,23 +56,31 @@ const Forms: React.FC<Props> = ({
             });
           }
           router.push(`/admin/unverified-members`);
-        } else if (apiUrl.split("/")[2] === "users" && method === "PUT") {
+        }
+        // Update user info
+        else if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           setUserAuth({
             id: resData?.id,
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
           router.push(`/user/profile/${resData.id || ""}`);
-        } else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
+        }
+        // Update events
+        else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
-        } else if (apiUrl === "/api/users/login" || "api/users/signin") {
+        }
+        // Update userAuth after login and sign up
+        else if (apiUrl === "/api/users/login" || "api/users/signin") {
           setUserAuth({
             id: resData?.id,
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
           router.push(`/user/profile/${resData.id}`);
-        } else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
+        }
+        // Carousel Update
+        else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
           router.push("/admin");
         }
         toast.success(jsonData.message);

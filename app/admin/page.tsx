@@ -36,14 +36,15 @@ const Admin = () => {
       <UpdateCarousel />
 
       {/* Adding member type button */}
-      <div className="flex w-full pt-14">
+      <h2 className="text-4xl text-center mt-14 font-bold">Member Types</h2>
+      <ol className="flex w-full justify-center">
         {types.map((type) => (
-          <div key={type.id} className="flex w-auto m-2 p-2">
+          <li key={type.id} className="flex gap-2 w-auto m-2 p-2 items-center bg-accent rounded-lg text-accent-content">
             <span>{type.type}</span>
             <DeleteButton apiUrl={`/api/member-type?id=${type.id}`} />
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
       <Forms
         {...{
           headingName: "Add Member type",
