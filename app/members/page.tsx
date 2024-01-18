@@ -18,17 +18,19 @@ const UserList = () => {
       .then((data) => setUsers(data));
   }, [userAuth]);
 
-  if (!users)
+  if (users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
-        <span className="loading loading-infinity loading-lg"></span>
+        <span className="loading loading-infinity loading-lg">
+        </span>
+          There have no member
       </div>
     );
 
   return (
     <main className="mx-auto max-w-[95vw] lg:max-w-[80vw] my-12">
       <h1 className="text-center text-4xl font-bold mb-5">Members</h1>
-      {users.map(
+      {users?.map(
         (user) =>
           !user?.isAdmin &&
           user?.isVerified && <Member key={user.id} {...user} />

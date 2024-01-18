@@ -19,8 +19,8 @@ const DeleteButton = ({ apiUrl }) => {
     const res = await fetch(apiUrl, { method: "DELETE" });
     const jData = await res.json();
     toast.dismiss();
-    if (jData.statusCode < 400) {
-      if (path !== "/") router.push("/");
+    if (jData.success) {
+      if (path !== "/" && path !== "/admin") router.push("/");
       toast.success(jData.message);
     } else toast.error(jData.errors);
   };
@@ -34,7 +34,7 @@ const DeleteButton = ({ apiUrl }) => {
         Delete!!
       </button>
       <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
+        <div className="modal-box text-white">
           <h3 className="font-bold text-lg">Are you sure?</h3>
           <p>You won&apos;t be able to revert this!</p>
           <div className="modal-action">

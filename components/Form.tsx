@@ -45,9 +45,11 @@ const Forms: React.FC<Props> = ({
         toast.dismiss();
 
         // Router Section
-
-        //Update Admin Section
-        if (apiUrl.split("/")[4] === "update-admin") {
+        // Update router type
+        if (apiUrl === "/api/member-type") {
+          router.refresh();
+        } //Update Admin Section
+        else if (apiUrl.split("/")[4] === "update-admin") {
           if (userAuth.id === resData?.id) {
             setUserAuth({
               id: resData?.id,
@@ -56,8 +58,7 @@ const Forms: React.FC<Props> = ({
             });
           }
           router.push(`/admin/unverified-members`);
-        }
-        // Update user info
+        } // Update user info
         else if (apiUrl.split("/")[2] === "users" && method === "PUT") {
           setUserAuth({
             id: resData?.id,
@@ -65,21 +66,21 @@ const Forms: React.FC<Props> = ({
             isAdmin: resData?.isAdmin,
           });
           router.push(`/user/profile/${resData.id || ""}`);
-        }
-        // Update events
+        } // Update events
         else if (apiUrl.split("/")[2] === "events" && method === "PUT") {
           router.push(`/activities/updated/${apiUrl.split("/")[3]}`);
-        }
-        // Update userAuth after login and sign up
-        else if (apiUrl === "/api/users/login" || "api/users/signin") {
+        } // Update userAuth after login and sign up
+        else if (
+          apiUrl === "/api/users/login" ||
+          apiUrl === "/api/users/signin"
+        ) {
           setUserAuth({
             id: resData?.id,
             images: resData?.images,
             isAdmin: resData?.isAdmin,
           });
           router.push(`/user/profile/${resData.id}`);
-        }
-        // Carousel Update
+        } // Carousel Update
         else if (apiUrl.split("/")[2] === "carousel" && method === "PUT") {
           router.push("/admin");
         }

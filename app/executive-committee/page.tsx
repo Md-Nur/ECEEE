@@ -17,10 +17,12 @@ const Admin = () => {
       .then((data) => data.reverse())
       .then((data) => setUsers(data));
   }, [userAuth]);
-  if (!users)
+  if (users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
-        <span className="loading loading-infinity loading-lg"></span>
+        <span className="loading loading-infinity loading-lg">
+        </span>
+          There have no executive comittee
       </div>
     );
 
@@ -29,7 +31,7 @@ const Admin = () => {
       <h1 className="text-center text-4xl font-bold mb-5">
         Executive Committee
       </h1>
-      {users.map(
+      {users?.map(
         (user) =>
           user?.isAdmin &&
           user?.isVerified && <Member key={user.id} {...user} />

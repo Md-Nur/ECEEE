@@ -22,7 +22,7 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
   const [error, setError] = useState<any>();
 
   useEffect(() => {
-    fetch(`/api/users/${params.id}/`)
+    fetch(`/api/users/${params.id}`)
       .then((res) => res.json())
       .then((jdata) => {
         if (jdata.statusCode >= 400) setError(jdata);
@@ -38,11 +38,7 @@ const UpdateAdmin = ({ params }: { params: { id: string } }) => {
       });
   }, [params.id]);
   if (error)
-    return (
-      <div className="text-center text-error text-5xl py-52">
-        {error?.errors}
-      </div>
-    );
+    return <div className="text-center text-error text-5xl py-52">{error}</div>;
 
   if (!user)
     return (

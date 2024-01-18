@@ -18,10 +18,10 @@ const Admin = () => {
         if (jData.success) {
           setTypes(jData.data);
         } else {
-          toast.error(jData.message);
+          toast.error(jData.errors);
         }
       });
-  });
+  }, []);
   return (
     <main className="mx-auto my-12">
       <div className="flex w-full pb-14">
@@ -37,14 +37,23 @@ const Admin = () => {
 
       {/* Adding member type button */}
       <h2 className="text-4xl text-center mt-14 font-bold">Member Types</h2>
-      <ol className="flex w-full justify-center">
-        {types.map((type) => (
-          <li key={type.id} className="flex gap-2 w-auto m-2 p-2 items-center bg-accent rounded-lg text-accent-content">
-            <span>{type.type}</span>
-            <DeleteButton apiUrl={`/api/member-type?id=${type.id}`} />
-          </li>
-        ))}
-      </ol>
+      {types[0].id > 0 ? (
+        <ol className="flex w-full justify-center">
+          {types.map((type) => (
+            <li
+              key={type.id}
+              className="flex gap-2 w-auto m-2 p-2 items-center bg-accent rounded-lg text-accent-content"
+            >
+              <span>{type.type}</span>
+              <DeleteButton apiUrl={`/api/member-type?id=${type.id}`} />
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="text-center text-error text-xl">
+          There have no member type
+        </p>
+      )}
       <Forms
         {...{
           headingName: "Add Member type",

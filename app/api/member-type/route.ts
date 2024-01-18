@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
       );
     }
     return NextResponse.json(
-      new ApiResponse(200, type, "Data receive successfully")
+      new ApiResponse(200, type, "Successfully get data")
     );
   } catch (error: any) {
     return NextResponse.json(new ApiError(404, error.message), { status: 404 });
@@ -60,7 +60,7 @@ export async function DELETE(req: NextRequest) {
       },
     });
     return NextResponse.json(
-      new ApiResponse(200, type, "Data receive successfully")
+      new ApiResponse(200, type, "Membership type delete successfully")
     );
   } catch (error: any) {
     return NextResponse.json(new ApiError(404, error.message), { status: 404 });
