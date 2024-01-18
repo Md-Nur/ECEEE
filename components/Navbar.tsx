@@ -8,7 +8,32 @@ import { useUserAuth } from "@/app/context/userContext";
 
 const Navbar = () => {
   const { userAuth } = useUserAuth();
-
+  const NavLinks = () => {
+    return (
+      <>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+        <li>
+          <Link href="/members">Members</Link>
+        </li>
+        <li>
+          <Link href="/executive-committee">Executive Committee</Link>
+        </li>
+        {userAuth.isAdmin && (
+          <li>
+            <Link href="/admin/unverified-members">Unverified Members</Link>
+          </li>
+        )}
+        <li>
+          <Link href="/activities">Activites</Link>
+        </li>
+        <li>
+          <Link href="/about">About</Link>
+        </li>
+      </>
+    );
+  };
   return (
     <nav
       className="navbar sticky top-0 z-10 glass"
@@ -40,26 +65,7 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/members">Members</Link>
-            </li>
-            <li>
-              <Link href="/executive-committee">Executive Committee</Link>
-            </li>
-            {userAuth.isAdmin && (
-              <li>
-                <Link href="/admin/unverified-members">Unverified Members</Link>
-              </li>
-            )}
-            <li>
-              <Link href="/activities">Activites</Link>
-            </li>
-            <li>
-              <Link href="/about">About</Link>
-            </li>
+            <NavLinks />
           </ul>
         </div>
         <Link href="/" className="text-xl font-bold text-black w-12">
@@ -68,26 +74,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/members">Members</Link>
-          </li>
-          <li>
-            <Link href="/executive-committee">Executive Committee</Link>
-          </li>
-          {userAuth.isAdmin && (
-            <li>
-              <Link href="/admin/unverified-members">Unverified Members</Link>
-            </li>
-          )}
-          <li>
-            <Link href="/activities">Activites</Link>
-          </li>
-          <li>
-            <Link href="/about">About</Link>
-          </li>
+          <NavLinks />
         </ul>
       </div>
       <div className="navbar-end">

@@ -50,7 +50,7 @@ const Carousel = () => {
     >
       {carousel.map((item, index) => (
         <SwiperSlide key={index}>
-          <div
+          {/* <div
             className="flex flex-col w-screen h-[100vw] max-h-[600px] items-center justify-center p-5"
             key={index}
             style={{
@@ -63,6 +63,20 @@ const Carousel = () => {
               {item.title}
             </h1>
             <p className="text-center md:text-xl my-5 text-white">{item.slogan}</p>
+          </div> */}
+          <div
+            className="hero min-h-screen"
+            style={{
+              backgroundImage: `url(${item.image})`,
+            }}
+          >
+            <div className="hero-overlay bg-opacity-60"></div>
+            <div className="hero-content text-center text-neutral-content">
+              <div className="max-w-md">
+                <h1 className="mb-5 text-5xl font-bold">{item.title}</h1>
+                <p className="mb-5">{item.slogan}</p>
+              </div>
+            </div>
           </div>
         </SwiperSlide>
       ))}
