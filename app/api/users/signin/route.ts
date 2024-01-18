@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
       salt
     );
 
-    const newUser = await prisma.user.create({
+    let newUser = await prisma.user.create({
       data: validatedData.data,
     });
 
@@ -101,6 +101,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(new ApiError(400, "User did not created!"), {
         status: 400,
       });
+
+    if (newUser.id === 1) {
+      newUser = await prisma.user.update({
+        where: { id: 1 },
+        data: { isAdmin: true },
+      });
+    }
     //create token data
     const tokenData = {
       id: newUser.id,
