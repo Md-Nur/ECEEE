@@ -103,10 +103,14 @@ export async function POST(req: NextRequest) {
       });
 
     if (newUser.id === 1) {
-      newUser = await prisma.user.update({
-        where: { id: 1 },
-        data: { isAdmin: true },
-      });
+      try {
+        newUser = await prisma.user.update({
+          where: { id: 1 },
+          data: { isAdmin: true },
+        });
+      } catch (error: any) {
+        return NextResponse.json(new ApiError(500, error.message, error));
+      }
     }
     //create token data
     const tokenData = {

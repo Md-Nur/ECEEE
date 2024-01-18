@@ -4,7 +4,6 @@ import Image from "next/image";
 import logo from "@/public/ru-logo.png";
 import LogoutButton from "./LogoutButton";
 import { useUserAuth } from "@/app/context/userContext";
-// import { useEffect, useState } from "react";
 
 const Navbar = () => {
   const { userAuth } = useUserAuth();
