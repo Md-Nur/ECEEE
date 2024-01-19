@@ -25,6 +25,8 @@ export async function GET(req: NextRequest) {
       status: 200,
     });
   } catch (error: any) {
-    return NextResponse.json(new ApiError(404, error.message), { status: 404 });
+    return NextResponse.json(new ApiError(404, error.message, data), {
+      status: 404,
+    });
   }
 }
