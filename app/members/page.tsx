@@ -8,7 +8,7 @@ const UserList = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users/verified-members", { cache: "no-store" })
+    fetch("/api/users/verified-members")
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;
@@ -21,9 +21,8 @@ const UserList = () => {
   if (users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
-        <span className="loading loading-infinity loading-lg">
-        </span>
-          There have no member
+        <span className="loading loading-infinity loading-lg"></span>
+        There have no member
       </div>
     );
 

@@ -5,34 +5,77 @@ import logo from "@/public/ru-logo.png";
 import LogoutButton from "./LogoutButton";
 import { useUserAuth } from "@/app/context/userContext";
 
+const NavLinks = () => {
+  const { userAuth } = useUserAuth();
+
+  return (
+    <>
+      <li>
+        <Link href="/">Home</Link>
+      </li>
+      <li>
+        <Link href="/members">Members</Link>
+      </li>
+      <li>
+        <Link href="/executive-committee">Executive Committee</Link>
+      </li>
+      {userAuth.isAdmin && (
+        <li>
+          <Link href="/admin/unverified-members">Unverified Members</Link>
+        </li>
+      )}
+      <li>
+        <Link href="/activities">Activites</Link>
+      </li>
+      <li>
+        <Link href="/about">About</Link>
+      </li>
+    </>
+  );
+};
+
+const ProfileLinks = () => {
+  const { userAuth } = useUserAuth();
+  return (
+    <>
+      {userAuth.id !== 0 && (
+        <li>
+          <Link
+            href={`/user/profile/${userAuth.id}`}
+            className="justify-between"
+          >
+            Profile
+          </Link>
+        </li>
+      )}
+
+      {userAuth.id !== 0 ? (
+        <li>
+          <LogoutButton />
+        </li>
+      ) : (
+        <>
+          <li>
+            <Link href="/user/login">Login</Link>
+          </li>
+
+          <li>
+            <Link href="/user/signin">Register</Link>
+          </li>
+        </>
+      )}
+      {userAuth?.isAdmin && (
+        <li>
+          <Link href="/admin">Admin</Link>
+        </li>
+      )}
+    </>
+  );
+};
+
 const Navbar = () => {
   const { userAuth } = useUserAuth();
-  const NavLinks = () => {
-    return (
-      <>
-        <li>
-          <Link href="/">Home</Link>
-        </li>
-        <li>
-          <Link href="/members">Members</Link>
-        </li>
-        <li>
-          <Link href="/executive-committee">Executive Committee</Link>
-        </li>
-        {userAuth.isAdmin && (
-          <li>
-            <Link href="/admin/unverified-members">Unverified Members</Link>
-          </li>
-        )}
-        <li>
-          <Link href="/activities">Activites</Link>
-        </li>
-        <li>
-          <Link href="/about">About</Link>
-        </li>
-      </>
-    );
-  };
+
   return (
     <nav
       className="navbar sticky top-0 z-10 glass"
@@ -99,37 +142,7 @@ const Navbar = () => {
             tabIndex={0}
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
           >
-            {userAuth.id !== 0 && (
-              <li>
-                <Link
-                  href={`/user/profile/${userAuth.id}`}
-                  className="justify-between"
-                >
-                  Profile
-                </Link>
-              </li>
-            )}
-
-            {userAuth.id !== 0 ? (
-              <li>
-                <LogoutButton />
-              </li>
-            ) : (
-              <>
-                <li>
-                  <Link href="/user/login">Login</Link>
-                </li>
-
-                <li>
-                  <Link href="/user/signin">Register</Link>
-                </li>
-              </>
-            )}
-            {userAuth?.isAdmin && (
-              <li>
-                <Link href="/admin">Admin</Link>
-              </li>
-            )}
+            <ProfileLinks />
           </ul>
         </div>
       </div>
@@ -137,4 +150,6 @@ const Navbar = () => {
   );
 };
 
+export { NavLinks };
+export { ProfileLinks };
 export default Navbar;

@@ -8,7 +8,7 @@ const Admin = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users/admin-members", { cache: "no-store" })
+    fetch("/api/users/admin-members")
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;
@@ -20,9 +20,8 @@ const Admin = () => {
   if (users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
-        <span className="loading loading-infinity loading-lg">
-        </span>
-          There have no executive comittee
+        <span className="loading loading-infinity loading-lg"></span>
+        There have no executive comittee
       </div>
     );
 

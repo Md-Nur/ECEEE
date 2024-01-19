@@ -10,6 +10,9 @@ export async function GET(req: NextRequest) {
         isVerified: false,
       },
     });
+    if (data.length == 0)
+      return NextResponse.json(new ApiError(404, "No user found"));
+
     return NextResponse.json(new ApiResponse(200, data), {
       status: 200,
     });
