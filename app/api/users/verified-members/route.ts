@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         isAdmin: false,
       },
     });
-    if (data.length == 0)
+    if (data.length === 0)
       return NextResponse.json(new ApiError(404, "No user found"), {
         status: 404,
       });

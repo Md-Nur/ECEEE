@@ -14,7 +14,7 @@ const UserList = () => {
         if (jData.success) return jData.data;
         else toast.error(jData.errors);
       })
-      .then((data) => data.reverse())
+      .then((data) => data?.reverse())
       .then((data) => setUsers(data));
   }, [userAuth]);
 

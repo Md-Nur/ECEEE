@@ -21,7 +21,7 @@ export async function PUT(
 ) {
   try {
     const data = await req.formData();
-    
+
     let body: any = {
       isVerified: data.get("isVerified") === "Verified",
       isAdmin: data.get("isAdmin") === "Admin",
@@ -43,11 +43,15 @@ export async function PUT(
         }
       );
     }
-
-    const updatedData = await prisma.user.update({
-      where: { id: Number(params.id) },
-      data: validatedData.data,
-    });
+    let updatedData;
+    try {
+      updatedData = await prisma.user.update({
+        where: { id: Number(params.id) },
+        data: validatedData.data,
+      });
+    } catch (error: any) {
+      return NextResponse.json(new ApiError(500, error.message, error));
+    }
 
     // update token if the admin edit his own data
     const ownData = req.cookies.get("token")?.value || "";
@@ -59,7 +63,7 @@ export async function PUT(
     const decodedData: any = jwt.verify(ownData, process.env.JWT_SECRET_TOKEN!);
 
     let res = NextResponse.json(
-      new ApiResponse(200, updatedData, "Update Admin details successfull"),
+      new ApiResponse(200, updatedData, "Update Admin details successfully"),
       { status: 200 }
     );
     if (decodedData.id === Number(params.id)) {
