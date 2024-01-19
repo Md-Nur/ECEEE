@@ -8,7 +8,7 @@ const Unverified = () => {
   const { userAuth } = useUserAuth();
   const [users, setUsers] = useState<User[]>();
   useEffect(() => {
-    fetch("/api/users/unverified-members", { cache: "no-store" })
+    fetch("/api/users/unverified-members")
       .then((res) => res.json())
       .then((jData) => {
         if (jData.success) return jData.data;

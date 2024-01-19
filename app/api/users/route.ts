@@ -18,8 +18,9 @@ export const userSchema = z.object({
 });
 
 export async function GET(req: NextRequest) {
+  let data;
   try {
-    const data = await prisma.user.findMany();
+    data = await prisma.user.findMany();
     return NextResponse.json(new ApiResponse(200, data), {
       status: 200,
     });

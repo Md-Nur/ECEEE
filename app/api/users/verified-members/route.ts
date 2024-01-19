@@ -4,15 +4,18 @@ import ApiError from "../../utils/ApiError";
 import ApiResponse from "../../utils/ApiResponse";
 
 export async function GET(req: NextRequest) {
+  let data;
   try {
-    const data = await prisma.user.findMany({
+    data = await prisma.user.findMany({
       where: {
         isVerified: true,
         isAdmin: false,
       },
     });
     if (data.length == 0)
-      return NextResponse.json(new ApiError(404, "No user found"));
+      return NextResponse.json(new ApiError(404, "No user found"), {
+        status: 404,
+      });
 
     return NextResponse.json(new ApiResponse(200, data), {
       status: 200,
