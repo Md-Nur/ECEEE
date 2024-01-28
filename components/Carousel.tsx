@@ -18,8 +18,8 @@ const Carousel = () => {
         "https://www.ru.ac.bd/eee/wp-content/uploads/sites/79/2023/12/20230824_123927-scaled.jpg",
     },
     {
-      title: "ECEEE",
-      slogan: "Electronics Club of Electrical & Electronic Engineering",
+      title: "Electronics Club",
+      slogan: "Electrical & Electronic Engineering",
       image:
         "https://www.ru.ac.bd/eee/wp-content/uploads/sites/79/2023/12/IMG-20230911-WA0001.jpg",
     },
@@ -50,20 +50,6 @@ const Carousel = () => {
     >
       {carousel.map((item, index) => (
         <SwiperSlide key={index}>
-          {/* <div
-            className="flex flex-col w-screen h-[100vw] max-h-[600px] items-center justify-center p-5"
-            key={index}
-            style={{
-              backgroundImage: `url('/fadebg.png'),url(${item.image})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          >
-            <h1 className="text-4xl md:text-8xl text-white font-bold">
-              {item.title}
-            </h1>
-            <p className="text-center md:text-xl my-5 text-white">{item.slogan}</p>
-          </div> */}
           <div
             className="hero min-h-screen"
             style={{
