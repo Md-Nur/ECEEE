@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { deleteFiles, fileToUrl } from "../../utils/files";
-import ApiError from "../../utils/ApiError";
+import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse";
 import { carouselSchema } from "../route";
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fileToUrl } from "../utils/files";
-import ApiError from "../utils/ApiError";
+import ApiError from "../utils/ApiError.js";
 import { z } from "zod";
 import prisma from "@/prisma/client";
 import ApiResponse from "../utils/ApiResponse";

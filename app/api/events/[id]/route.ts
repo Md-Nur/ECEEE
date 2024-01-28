@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { eventSchema } from "../route";
 import prisma from "@/prisma/client";
 import { deleteFiles, filesToUrls } from "../../utils/files";
-import ApiError from "@/app/api/utils/ApiError";
+import ApiError from "@/app/api/utils/ApiError.js";
 import ApiResponse from "@/app/api/utils/ApiResponse";
 
 export async function GET(
