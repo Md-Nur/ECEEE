@@ -19,7 +19,7 @@ const Admin = () => {
         toast.error(err.message);
       });
   }, [userAuth]);
-  if (users?.length === 0)
+  if (!users || users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
         <span className="loading loading-infinity loading-lg"></span>
