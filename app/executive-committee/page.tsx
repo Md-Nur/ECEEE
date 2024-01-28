@@ -11,11 +11,13 @@ const Admin = () => {
     fetch("/api/users/admin-members")
       .then((res) => res.json())
       .then((jData) => {
-        if (jData.success) return jData.data;
-        else toast.error(jData.errors);
+        if (jData.success) {
+          setUsers(jData?.data?.reverse());
+        } else toast.error(jData.errors);
       })
-      .then((data) => data.reverse())
-      .then((data) => setUsers(data));
+      .catch((err) => {
+        toast.error(err.message);
+      });
   }, [userAuth]);
   if (users?.length === 0)
     return (

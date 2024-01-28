@@ -104,7 +104,7 @@ const Forms: React.FC<Props> = ({
       <form
         autoComplete="off"
         ref={ref}
-        className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-[95vw] lg:w-[60vw] gap-5 bg-neutral"
+        className="flex flex-col items-center justify-center shadow rounded-lg px-5 py-10 md:m-5 w-auto mx-auto gap-5 bg-neutral"
         method={method}
         onSubmit={onSubmit}
       >

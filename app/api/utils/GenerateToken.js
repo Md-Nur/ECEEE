@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from "next/dist/server/api-utils";
-import { boolean, z } from "zod";
+import { ApiError } from "@/app/api/utils/ApiError";
+import { z } from "zod";
 
 export const Tokentype = z.object({
   id: z.number(),

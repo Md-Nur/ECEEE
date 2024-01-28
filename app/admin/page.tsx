@@ -45,6 +45,8 @@ const Admin = () => {
               className="flex gap-2 w-auto m-2 p-2 items-center bg-accent rounded-lg text-accent-content"
             >
               <span>{type.type}</span>
+
+              <label htmlFor="dlt-mem"></label>
               <DeleteButton apiUrl={`/api/member-type?id=${type.id}`} />
             </li>
           ))}

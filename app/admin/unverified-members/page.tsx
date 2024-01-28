@@ -11,14 +11,16 @@ const Unverified = () => {
     fetch("/api/users/unverified-members")
       .then((res) => res.json())
       .then((jData) => {
-        if (jData.success) return jData.data;
-        else toast.error(jData.errors);
+        if (jData.success) {
+          setUsers(jData?.data?.reverse());
+        } else toast.error(jData.errors);
       })
-      .then((data) => data.reverse())
-      .then((data) => setUsers(data));
+      .catch((err) => {
+        toast.error(err.message);
+      });
   }, [userAuth]);
 
-  if (users?.length === 0)
+  if (!users || users?.length === 0)
     return (
       <div className="h-screen flex items-center justify-center">
         <span className="loading loading-infinity loading-lg"></span>
