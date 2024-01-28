@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  fullname           String
+  rollNo             String   @unique
+  session            String   @default("")
+  year               String   @default("")
+  phone              String   @unique
+  email              String
+  interests          String   @default("")
+  password           String
+  images             String
+  isVerified         Boolean  @default(false)
+  isAdmin            Boolean  @default(false)
+  membershipFee      Int      @default(0)
+  membershipValidity String   @default("")
+  membershipType     String   @default("")
+  memberId           Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @default("")
+  images      String[] @default([""])
+  author      String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Carousel {
+  id        Int      @id @default(autoincrement())
+  title     String   @default("ECEEE")
+  slogan    String   @default("Electronics Club of Electrical & Electronic Engineering")
+  image     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MemberType {
+  id   Int    @id @default(autoincrement())
+  type String @default("")
+}
