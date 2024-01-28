@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ApiError } from ".ApiError.js";
+import { ApiError } from "./ApiError";
 import { z } from "zod";
 
 export const Tokentype = z.object({
