@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
 
   if (file.size > 1) {
     try {
-      await deleteFiles(image, "users"); // deleting the previous files
+      await deleteFiles(image); // deleting the previous files
     } catch (e: any) {
       return NextResponse.json(
         new ApiError(
@@ -210,7 +210,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 
   let image: string = prevData?.images!;
   try {
-    await deleteFiles(image, "users");
+    await deleteFiles(image);
   } catch (error: any) {
     return NextResponse.json(
       new ApiError(420, error.message || "Can't delete images")

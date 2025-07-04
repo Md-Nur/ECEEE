@@ -24,8 +24,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserAuthProvider>
           <Navbar />
-          {children}
-          <Toaster position="bottom-center" reverseOrder={false} />
+          <main className="min-h-[calc(100vh-324px)]">
+            {children}
+            <Toaster position="bottom-center" reverseOrder={false} />
+          </main>
           <Footer />
         </UserAuthProvider>
       </body>

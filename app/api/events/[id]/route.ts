@@ -37,7 +37,7 @@ export async function PUT(
 
   if (files[0].size > 1) {
     try {
-      await deleteFiles(images, "events"); // deleting the previous files
+      await deleteFiles(images); // deleting the previous files
     } catch (e: any) {
       return NextResponse.json(
         new ApiError(
@@ -98,7 +98,7 @@ export async function DELETE(
 
   let images: string[] = prevData?.images!;
   try {
-    await deleteFiles(images, "events");
+    await deleteFiles(images);
   } catch (e: any) {
     return NextResponse.json(
       new ApiError(450, e.message || "Can't delete previous images"),

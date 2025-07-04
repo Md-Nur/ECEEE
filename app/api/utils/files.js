@@ -3,7 +3,7 @@ import uploadOnCloudinay, {
   deleteOnCloudinary,
 } from "@/app/api/utils/cloudinary";
 import ApiError from "./ApiError";
-// import { writeFile } from "fs/promises";
+import { writeFile, unlink } from "fs/promises";
 // const fs = require("fs")
 
 // export const getFiles = async (dir, files = []) => {
@@ -34,12 +34,15 @@ export const fileToUrl = async (file, folder) => {
       "Files must be and image extention with jpg/jpeg/png"
     );
   }
-  const byteData = await file.arrayBuffer();
-  const buffer = Buffer.from(byteData);
   try {
+    const byteData = await file.arrayBuffer();
+    const buffer = Buffer.from(byteData);
     // upload on cloudinary
-    let path = await uploadOnCloudinay(buffer, folder);
-    return path;
+    // let path = await uploadOnCloudinay(buffer, folder);
+    let path = `./public/${folder}/${Date.now()}.${extention}`;
+    await writeFile(path, buffer);
+    // no such file or directory, open 'D:\Projects\eceee\public\users\1706665197299.jpg'
+    return path.slice(8);
   } catch (e) {
     throw new ApiError(450, e.message);
   }
@@ -59,32 +62,46 @@ export const filesToUrls = async (files, folder) => {
   return imageUrl;
 };
 
-export const deleteFiles = async (images, folder) => {
-  const extractFileName = (img) => {
-    const urlArr = img.split("/");
-    const mainName = urlArr[urlArr.length - 1];
-    const nameExt = mainName.split(".");
-    const withoutExt = nameExt[0];
-    return withoutExt;
-  };
-  let imagesUrl = [];
+export const deleteFiles = async (images) => {
   if (typeof images !== "string") {
     for (const img of images) {
-      const fileName = extractFileName(img);
-      imagesUrl.push(`ECEEE/${folder}/${fileName}`);
+      unlink(`./public${img}`);
     }
   } else if (images.length < 1) {
     // throw new ApiError(404, "At least one image is required");
     return;
   } else {
-    const fileName = extractFileName(images);
-    imagesUrl.push(`ECEEE/${folder}/${fileName}`);
-  }
-  try {
-    console.log(imagesUrl);
-    await deleteOnCloudinary(imagesUrl); // deleting the previous files
-  } catch (e) {
-    // throw Error(e);
-    return new ApiError(404, `There have no file named: ${images}`, e);
+    unlink(`./public/${images}`);
   }
 };
+
+// Delete on cloudinary
+// export const deleteFiles = async (images, folder) => {
+//   const extractFileName = (img) => {
+//     const urlArr = img.split("/");
+//     const mainName = urlArr[urlArr.length - 1];
+//     const nameExt = mainName.split(".");
+//     const withoutExt = nameExt[0];
+//     return withoutExt;
+//   };
+//   let imagesUrl = [];
+//   if (typeof images !== "string") {
+//     for (const img of images) {
+//       const fileName = extractFileName(img);
+//       imagesUrl.push(`ECEEE/${folder}/${fileName}`);
+//     }
+//   } else if (images.length < 1) {
+//     // throw new ApiError(404, "At least one image is required");
+//     return;
+//   } else {
+//     const fileName = extractFileName(images);
+//     imagesUrl.push(`ECEEE/${folder}/${fileName}`);
+//   }
+//   try {
+//     console.log(imagesUrl);
+//     await deleteOnCloudinary(imagesUrl); // deleting the previous files
+//   } catch (e) {
+//     // throw Error(e);
+//     return new ApiError(404, `There have no file named: ${images}`, e);
+//   }
+// };

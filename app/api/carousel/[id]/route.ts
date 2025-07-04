@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
 
   if (files.size > 1) {
     try {
-      await deleteFiles(image, "carousel"); // deleting the previous files
+      await deleteFiles(image); // deleting the previous files
     } catch (e: any) {
       return NextResponse.json(
         new ApiError(420, e.message || "Previous Images can not be deleted"),
@@ -94,7 +94,7 @@ export async function DELETE(
 
   let image: string = prevData?.image!;
 
-  await deleteFiles(image, "carousel"); // deleting the previous files
+  await deleteFiles(image); // deleting the previous files
 
   const carousel = await prisma.carousel.delete({
     where: { id: Number(params.id) },
